@@ -1,7 +1,8 @@
 <?php
 namespace App\Helpers;
 
-class AppointmentHelper {
+class AppointmentHelper 
+{
     public static function getAllTimeSlotsForDate(string $date): array
     {
         $allSlots = [];
