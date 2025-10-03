@@ -20,14 +20,8 @@ class LoginController extends Controller
             $user = $this->authService->attempt($email, $password);
             $this->authService->login($user);
             $this->redirect('/');
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->redirect('/');
-        } catch (UserNotFoundException $e) {
-            $this->handleException($e, 'User not found');
-            return $this->redirect('/');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
+            $this->handleException($e);
             return $this->redirect('/');
         }
     }
