@@ -11,18 +11,12 @@ class HomeController extends Controller {
         }
 
         $role = $_SESSION['user']['role'] ?? null;
-        switch ($role) {
-            case 'student':
-                $this->redirect('/home');
-                break;
-            case 'mentor':
-                $this->redirect('/admin/mentor');
-                break;
-            case 'admin':
-                $this->redirect('/admin/users');
-                break;
-            default:
-                $this->view('login');
-        }
+
+        match ($role) {
+            'student' => $this->redirect('/home'),
+            'mentor' => $this->redirect('/admin/mentor'),
+            'admin' => $this->redirect('/admin/users'),
+            default => $this->view('login'),
+        };        
     }
 }
