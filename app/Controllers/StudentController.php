@@ -34,11 +34,8 @@ class StudentController extends Controller
         try {
             $specializations = $this->specializationService->getAllSpecializations();
             return $this->view('student/index', ['specializations' => $specializations]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->view('student/index');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->view('student/index');
         }
     }
@@ -50,11 +47,8 @@ class StudentController extends Controller
                 'success' => true,
                 'mentors' => $mentors
             ]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->json(json_decode((string) $e, true));
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->json([
                 'success' => false,
                 'message' => 'Error. Something went wrong'
@@ -71,11 +65,8 @@ class StudentController extends Controller
             ]);
         } catch (InvalidTimeSlotDataException $e) {
             return $this->json(json_decode((string) $e, true));
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->json(json_decode((string) $e, true));
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->json([
                 'success' => false,
                 'message' => 'Error. Something went wrong'
@@ -92,14 +83,8 @@ class StudentController extends Controller
             ]);
         } catch (InvalidBookingDataException $e) {
             return $this->json(json_decode((string) $e, true));
-        } catch (InvalidArgumentException $e) {
-            $this->handleException($e, 'User not authenticated. Please login again.');
-            return $this->json(json_decode((string) $e, true));
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->json(json_decode((string) $e, true));
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (InvalidArgumentException|DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->json([
                 'success' => false,
                 'message' => 'Error. Something went wrong'
@@ -115,11 +100,8 @@ class StudentController extends Controller
 
             $appointments = $this->appointmentReadService->getPaginatedAppointments($page);
             return $this->view('student/appointments', ['appointments' => $appointments]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->view('student/appointments');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->view('student/appointments');
         }
     }
@@ -133,11 +115,8 @@ class StudentController extends Controller
             ]);
         } catch (InvalidArgumentException $e) {
             return $this->json(json_decode((string) $e, true));
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->json(json_decode((string) $e, true));
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|\Throwable $e) {
+            $this->handleException($e);
             return $this->json(json_decode((string) $e, true));
         }
     }

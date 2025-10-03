@@ -1,6 +1,12 @@
 <?php
 namespace App\Controllers;
 
+use App\Exceptions\DatabaseException;
+use App\Exceptions\UserNotFoundException;
+use App\Exceptions\InvalidArgumentException;
+use App\Exceprions\InvalidPaymentDataException;
+use App\Exceprions\InvalidUserDataException;
+
 class Controller {
     
     protected function view(string $view, array $data = []): void
@@ -22,9 +28,47 @@ class Controller {
         exit;
     }
 
-    protected function handleException(\Throwable $e, string $message = 'Something went wrong'): void
+    protected function handleException(\Throwable $e, string $defaultMessage = 'Something went wrong.'): void
     {
-        $_SESSION['error'] = $message;
-        logError($e->getMessage());
+        $error = match (true) {
+            $e instanceof DatabaseException => [
+                'message' => 'Something went wrong with database.',
+                'log' => true,
+            ],
+            $e instanceof UserNotFoundException => [
+                'message' => 'User not found.',
+                'log' => false,
+            ],
+            $e instanceof \InvalidArgumentException => [
+                'message' => 'User not authenticated. Please login again.',
+                'log' => false,
+            ],
+            $e instanceof \InvalidPaymentDataException => [
+                'message' => 'Validation failed',
+                'log' => false,
+            ],
+            $e instanceof \InvalidUserDataException => [
+                'message' => 'Validation error. Errors: ' . implode(', ', $e->getErrors()),
+                'log' => false,
+            ],
+            $e instanceof \Exception => [
+                'message' => 'Payment error.',
+                'log' => true,
+            ],
+            $e instanceof \Error => [
+                'message' => 'Error. Something went wrong.',
+                'log' => true,
+            ],
+            default => [
+                'message' => $defaultMessage,
+                'log' => true,
+            ],
+        };
+        
+        $_SESSION['error'] = $error['message'];
+    
+        if ($error['log']) {
+            logError($e->getMessage());
+        }
     }
 }

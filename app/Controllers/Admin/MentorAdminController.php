@@ -28,14 +28,8 @@ class MentorAdminController extends Controller
         try {
             $appointments = $this->appointmentReadService->getPaginatedAppointments($page);
             return $this->view('mentor/index', ['appointments' => $appointments]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->view('mentor/index');
-        } catch (InvalidArgumentException $e) {
-            $this->handleException($e, 'User not authenticated. Please login again.');
-            return $this->view('mentor/index');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
+            $this->handleException($e);
             return $this->view('mentor/index');
         }
     }
@@ -44,14 +38,8 @@ class MentorAdminController extends Controller
         try {
             $this->appointmentWriteService->updateAppointmentStatus($_POST);
             return $this->json(['success' => true]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->json(['success' => false]);
-        } catch (InvalidArgumentException $e) {
-            $this->handleException($e, 'User not authenticated. Please login again.');
-            return $this->json(['success' => false]);
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
+            $this->handleException($e);
             return $this->json(['success' => false]);
         }
     }

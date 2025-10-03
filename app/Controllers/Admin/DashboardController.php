@@ -23,7 +23,7 @@ class DashboardController extends Controller
                 'mentors' => $totalData['mostActiveAndMostRatedMentors']
             ]);
         } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+            $this->handleException($e);
             return $this->view('admin/dashboard');
         }
     }

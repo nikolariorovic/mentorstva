@@ -38,14 +38,8 @@ class PaymentController extends Controller
             
             return $this->redirect('/appointments');
             
-        } catch (InvalidArgumentException $e) {
-            $this->handleException($e, 'User not authenticated. Please login again.');
-            return $this->redirect('/appointments');
-        } catch (InvalidPaymentDataException $e) {
-            $this->handleException($e, 'Validation failed');
-            return $this->redirect('/appointments');
-        } catch (\Exception $e) {
-            $this->handleException($e, 'Payment processing failed');
+        } catch (InvalidArgumentException|InvalidPaymentDataException|\Exception $e) {
+            $this->handleException($e);
             return $this->redirect('/appointments');
         }
     }
@@ -59,11 +53,8 @@ class PaymentController extends Controller
         try {
             $payments = $this->paymentService->getPayments($page);
             return $this->view('admin/payments', ['payments' => $payments]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Failed to get payments');
-            return $this->redirect('/admin/payments');
-        } catch (\Exception $e) {
-            $this->handleException($e, 'Failed to get payments');
+        } catch (DatabaseException|\Exception $e) {
+            $this->handleException($e);
             return $this->redirect('/admin/payments');
         }
     }
@@ -73,11 +64,8 @@ class PaymentController extends Controller
         try {
             $payments = $this->paymentService->paymentsAccepted($id);
             return $this->redirect('/admin/payments');
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Failed to get payments');
-            return $this->redirect('/admin/payments');
-        } catch (\Exception $e) {
-            $this->handleException($e, 'Failed to get payments');
+        } catch (DatabaseException|\Exception $e) {
+            $this->handleException($e);
             return $this->redirect('/admin/payments');
         }
     }

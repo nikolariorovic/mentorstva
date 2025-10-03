@@ -40,14 +40,8 @@ class UserAdminController extends Controller
             $users = $this->userReadService->getPaginatedUsers($page);
             $specializations = $this->specializationService->getAllSpecializations();
             return $this->view('admin/index', ['users' => $users, 'specializations' => $specializations]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->view('admin/index');
-        } catch (InvalidUserDataException $e) {
-            $this->handleException($e, 'Validation error. Errors: ' . implode(', ', $e->getErrors()));
-            return $this->view('admin/index');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
+            $this->handleException($e);
             return $this->view('admin/index');
         }
     }
@@ -58,15 +52,9 @@ class UserAdminController extends Controller
             $this->userWriteService->createUser($_POST);
             $_SESSION['success'] = 'User created successfully';
             return $this->redirect('/admin/users');
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
+        } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
+            $this->handleException($e);
             return $this->redirect('/admin/users');
-        } catch (InvalidUserDataException $e) {
-            $this->handleException($e, 'Validation error. Errors: ' . implode(', ', $e->getErrors()));
-            return $this->redirect('/admin/users');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
-            return $this->redirect('/admin/users'); 
         }
     }
 
@@ -76,12 +64,13 @@ class UserAdminController extends Controller
             $user = $this->userReadService->getUserById($id);
             $specializations = $this->specializationService->getAllSpecializations();
             return $this->view('admin/show', ['user' => $user, 'specializations' => $specializations]);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->view('admin/show', ['user' => null, 'specializations' => []]);
-        } catch (UserNotFoundException $e) {
-            $this->handleException($e, 'User not found');
-            return $this->redirect('/admin/users');
+        } catch (DatabaseException|UserNotFoundException $e) {
+            $this->handleException($e);
+            return match (true) {
+                $e instanceof DatabaseException => $this->view('admin/show', ['user' => null, 'specializations' => []]),
+                $e instanceof UserNotFoundException => $this->redirect('/admin/users'),
+                default => $this->redirect('/'),
+            };
         }
     }
 
@@ -91,18 +80,14 @@ class UserAdminController extends Controller
             $this->userWriteService->updateUser($id, $_POST);
             $_SESSION['success'] = 'User updated successfully';
             return $this->redirect('/admin/users/' . $id);
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->redirect('/admin/users/' . $id);
-        } catch (InvalidUserDataException $e) {
-            $this->handleException($e, 'Validation error. Errors: ' . implode(', ', $e->getErrors()));
-            return $this->redirect('/admin/users/' . $id);
-        } catch (UserNotFoundException $e) {
-            $this->handleException($e, 'User not found');
-            return $this->redirect('/admin/users');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
-            return $this->redirect('/admin/users');
+        } catch (DatabaseException|InvalidUserDataException|UserNotFoundException|\Throwable $e) {
+            $this->handleException($e);
+            return match (true) {
+                $e instanceof DatabaseException => $this->redirect('/admin/users/' . $id),
+                $e instanceof InvalidUserDataException => $this->redirect('/admin/users/' . $id),
+                $e instanceof UserNotFoundException => $this->redirect('/admin/users'),
+                default => $this->redirect('/admin/users'),
+            };
         }
     }
 
@@ -112,14 +97,8 @@ class UserAdminController extends Controller
             $this->userWriteService->deleteUser($id);
             $_SESSION['success'] = 'User deleted successfully';
             return $this->redirect('/admin/users');
-        } catch (DatabaseException $e) {
-            $this->handleException($e, 'Something went wrong');
-            return $this->redirect('/admin/users');
-        } catch (UserNotFoundException $e) {
-            $this->handleException($e, 'User not found');
-            return $this->redirect('/admin/users');
-        } catch (\Throwable $e) {
-            $this->handleException($e, 'Error. Something went wrong');
+        } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
+            $this->handleException($e);
             return $this->redirect('/admin/users');
         }
     }
