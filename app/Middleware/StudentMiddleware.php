@@ -6,7 +6,7 @@ class StudentMiddleware
 {
     public function handle()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== UserRole::STUDENT) {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== UserRole::STUDENT->value) {
             header('Location: /');
             return false;
         }

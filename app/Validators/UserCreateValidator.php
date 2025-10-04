@@ -56,7 +56,7 @@ class UserCreateValidator extends BaseValidator
             ],
             'role' => [
                 'required' => true,
-                'in' => [UserRole::ADMIN, UserRole::MENTOR, UserRole::STUDENT],
+                'in' => [UserRole::ADMIN->value, UserRole::MENTOR->value, UserRole::STUDENT->value],
                 'messages' => [
                     'required' => 'Role is required',
                     'in' => 'Invalid role. Must be one of: admin, mentor, student'

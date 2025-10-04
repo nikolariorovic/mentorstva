@@ -29,7 +29,7 @@ class AppointmentRepository extends BaseRepository implements AppointmentReposit
 
     public function getPaginatedAppointments(int $userId, string $role, int $page): array
     {
-        if ($role === UserRole::STUDENT) {
+        if ($role === UserRole::STUDENT->value) {
             $sql = "SELECT a.*, 
                            u.first_name as mentor_name, 
                            u.last_name as mentor_last_name,

@@ -44,7 +44,7 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
     public function processPayment(string $gatewayName = null, array $data = []): array
     {
         $user = $this->sessionService->getSession();
-        if (!$user || !$user['id'] || $user['role'] !== UserRole::STUDENT) {
+        if (!$user || !$user['id'] || $user['role'] !== UserRole::STUDENT->value) {
             throw new InvalidArgumentException('User not authenticated. Please login again.');
         }
 

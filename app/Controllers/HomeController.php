@@ -14,9 +14,9 @@ class HomeController extends Controller {
         $role = $_SESSION['user']['role'] ?? null;
 
         match ($role) {
-            UserRole::STUDENT => $this->redirect('/home'),
-            UserRole::MENTOR => $this->redirect('/admin/mentor'),
-            UserRole::ADMIN => $this->redirect('/admin/users'),
+            UserRole::STUDENT->value => $this->redirect('/home'),
+            UserRole::MENTOR->value => $this->redirect('/admin/mentor'),
+            UserRole::ADMIN->value => $this->redirect('/admin/users'),
             default => $this->view('login'),
         };        
     }

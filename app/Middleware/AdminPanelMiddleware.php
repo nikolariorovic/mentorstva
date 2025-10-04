@@ -6,7 +6,7 @@ class AdminPanelMiddleware
 {
     public function handle()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== UserRole::ADMIN && $_SESSION['user']['role'] !== UserRole::MENTOR) {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== UserRole::ADMIN->value && $_SESSION['user']['role'] !== UserRole::MENTOR->value) {
             header('Location: /');
             return false;
         }

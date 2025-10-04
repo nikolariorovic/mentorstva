@@ -13,7 +13,7 @@ abstract class User
     protected string $email = '';
     protected string $password = '';
     protected string $biography = '';
-    protected string $role = UserRole::STUDENT;
+    protected string $role = UserRole::STUDENT->value;
     protected ?float $price = null;
     protected DateTime $created_at;
     protected DateTime $updated_at;
@@ -139,7 +139,7 @@ abstract class User
 
     public function setRole(string $role): void 
     {
-        $allowedRoles = [UserRole::ADMIN, UserRole::MENTOR, UserRole::STUDENT];
+        $allowedRoles = [UserRole::ADMIN->value, UserRole::MENTOR->value, UserRole::STUDENT->value];
         if (!in_array($role, $allowedRoles)) {
             throw new InvalidArgumentException('Invalid role. Must be one of: ' . implode(', ', $allowedRoles));
         }
