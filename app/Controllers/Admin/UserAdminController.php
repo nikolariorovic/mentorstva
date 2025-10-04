@@ -2,6 +2,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Dto\UserAdminDto;
 use App\Services\Interfaces\UserReadServiceInterface;
 use App\Repositories\UserRepository;
 use App\Exceptions\DatabaseException;
@@ -33,7 +34,7 @@ class UserAdminController extends Controller
         try {
             $users = $this->userReadService->getPaginatedUsers(page: $page);
             $specializations = $this->specializationService->getAllSpecializations();
-            $this->view(view: 'admin/index', data: ['users' => $users, 'specializations' => $specializations]);
+            $this->view(view: 'admin/index', data: UserAdminDto::fromIndex(users: $users, specializations: $specializations)->toArray());
         } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'admin/index');
@@ -57,11 +58,11 @@ class UserAdminController extends Controller
         try {
             $user = $this->userReadService->getUserById(id: $id);
             $specializations = $this->specializationService->getAllSpecializations();
-            $this->view(view: 'admin/show', data: ['user' => $user, 'specializations' => $specializations]);
+            $this->view(view: 'admin/show', data: UserAdminDto::fromShow(user: $user, specializations: $specializations)->toArray());
         } catch (DatabaseException|UserNotFoundException $e) {
             $this->handleException(e: $e);
             match (true) {
-                $e instanceof DatabaseException => $this->view(view: 'admin/show', data: ['user' => null, 'specializations' => []]),
+                $e instanceof DatabaseException => $this->view(view: 'admin/show', data: UserAdminDto::fromShow(user: null, specializations: [])->toArray()),
                 $e instanceof UserNotFoundException => $this->redirect(url: '/admin/users'),
                 default => $this->redirect(url: '/'),
             };

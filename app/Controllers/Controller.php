@@ -51,11 +51,7 @@ class Controller {
                 'message' => 'Validation error. Errors: ' . implode(', ', $e->getErrors()),
                 'log' => false,
             ],
-            $e instanceof \Exception => [
-                'message' => 'Payment error.',
-                'log' => true,
-            ],
-            $e instanceof \Error => [
+            $e instanceof \Exception, $e instanceof \Error => [
                 'message' => 'Error. Something went wrong.',
                 'log' => true,
             ],
@@ -64,7 +60,7 @@ class Controller {
                 'log' => true,
             ],
         };
-        
+
         $_SESSION['error'] = $error['message'];
     
         if ($error['log']) {

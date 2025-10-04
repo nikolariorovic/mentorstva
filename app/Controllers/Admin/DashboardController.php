@@ -2,6 +2,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Dto\DashboardDto;
 use App\Services\Interfaces\AppointmentReadServiceInterface;
 
 class DashboardController extends Controller
@@ -14,12 +15,7 @@ class DashboardController extends Controller
     {
         try {
             $totalData = $this->appointmentReadService->getAppointmentsForDashboard();
-            $this->view(view: 'admin/dashboard', data:
-            [
-                'appointments' => $totalData['appointments'], 
-                'profit' => $totalData['profit'], 
-                'mentors' => $totalData['mostActiveAndMostRatedMentors']
-            ]);
+            $this->view(view: 'admin/dashboard', data: DashboardDto::from(data: $totalData)->toArray());
         } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'admin/dashboard');

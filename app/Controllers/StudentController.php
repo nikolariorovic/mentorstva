@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Dto\StudentDto;
 use App\Services\Interfaces\SpecializationServiceInterface;
 use App\Exceptions\DatabaseException;
 use App\Exceptions\InvalidBookingDataException;
@@ -26,7 +27,7 @@ class StudentController extends Controller
     {
         try {
             $specializations = $this->specializationService->getAllSpecializations();
-            $this->view(view: 'student/index', data: ['specializations' => $specializations]);
+            $this->view(view: 'student/index', data: StudentDto::fromIndex($specializations)->toArray());
         } catch (DatabaseException|\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'student/index');
@@ -96,7 +97,7 @@ class StudentController extends Controller
             : 1;
 
             $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
-            $this->view(view: 'student/appointments',data: ['appointments' => $appointments]);
+            $this->view(view: 'student/appointments',data: StudentDto::fromAppointments($appointments)->toArray());
         } catch (DatabaseException|\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'student/appointments');

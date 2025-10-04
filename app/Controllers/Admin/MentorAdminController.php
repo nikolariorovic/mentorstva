@@ -2,6 +2,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Dto\MentorDto;
 use App\Services\Interfaces\AppointmentReadServiceInterface;
 use App\Services\Interfaces\AppointmentWriteServiceInterface;
 use App\Exceptions\DatabaseException;
@@ -23,7 +24,7 @@ class MentorAdminController extends Controller
         
         try {
             $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
-            $this->view(view: 'mentor/index', data: ['appointments' => $appointments]);
+            $this->view(view: 'mentor/index', data: MentorDto::from(data: $appointments)->toArray());
         } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'mentor/index');

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Dto\PaymentDto;
 use App\Services\PaymentService;
 use App\Exceptions\InvalidPaymentDataException;
 use App\Exceptions\InvalidArgumentException;
@@ -50,7 +51,7 @@ class PaymentController extends Controller
 
         try {
             $payments = $this->paymentService->getPayments(page: $page);
-            $this->view(view: 'admin/payments', data: ['payments' => $payments]);
+            $this->view(view: 'admin/payments', data: PaymentDto::from($payments)->toArray());
         } catch (DatabaseException|\Exception $e) {
             $this->handleException(e: $e);
             $this->redirect(url: '/admin/payments');
