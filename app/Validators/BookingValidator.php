@@ -74,7 +74,7 @@ class BookingValidator extends BaseValidator
     protected function throwValidationException(): void
     {
         $exception = new InvalidBookingDataException();
-        $exception->setErrors($this->errors);
+        $exception->setErrors(errors: $this->errors);
         throw $exception;
     }
 } 

@@ -29,7 +29,7 @@ class UpdateAppointmentStatusValidator extends BaseValidator
     protected function throwValidationException(): void
     {
         $exception = new InvalidAppointmentStatusDataException();
-        $exception->setErrors($this->errors);
+        $exception->setErrors(errors: $this->errors);
         throw $exception;
     }
 } 

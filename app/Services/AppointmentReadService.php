@@ -20,13 +20,13 @@ class AppointmentReadService implements AppointmentReadServiceInterface
 
     public function getAvailableTimeSlots(array $data): array
     {
-        $this->timeSlotValidator->validate($data);
+        $this->timeSlotValidator->validate(data: $data);
         
         $mentorId = (int) $data['mentor_id'];
         $date = $data['date'];
         
-        $bookedSlots = $this->appointmentRepository->getAvailableTimeSlots($mentorId, $date);
-        $allSlots = AppointmentHelper::getAllTimeSlotsForDate($date);
+        $bookedSlots = $this->appointmentRepository->getAvailableTimeSlots(mentorId: $mentorId, date: $date);
+        $allSlots = AppointmentHelper::getAllTimeSlotsForDate(date: $date);
         
         if (empty($bookedSlots)) {
             return $allSlots;
@@ -47,10 +47,10 @@ class AppointmentReadService implements AppointmentReadServiceInterface
     {
         $user = $this->sessionService->getSession();
         if (!$user || !$user['id']) {
-            throw new InvalidArgumentException('User not authenticated. Please login again.');
+            throw new InvalidArgumentException(message: 'User not authenticated. Please login again.');
         }
      
-        return $this->appointmentRepository->getPaginatedAppointments($user['id'], $user['role'], $page);
+        return $this->appointmentRepository->getPaginatedAppointments(userId: $user['id'], role: $user['role'], page: $page);
     }
 
     public function getAppointmentsForDashboard(): array

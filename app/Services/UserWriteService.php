@@ -25,10 +25,10 @@ class UserWriteService implements UserWriteServiceInterface
 
     public function createUser(array $data): void
     {
-        $this->userCreateValidator->validate($data);
-        $user = UserFactory::create($data);
+        $this->userCreateValidator->validate(data: $data);
+        $user = UserFactory::create(data: $data);
         
-        $this->userWriteRepository->createUser([
+        $this->userWriteRepository->createUser(params: [
             $user->getFirstName(),
             $user->getLastName(),
             $user->getEmail(),
@@ -40,50 +40,50 @@ class UserWriteService implements UserWriteServiceInterface
         ]);
 
         if ($user instanceof Mentor && isset($data['specializations']) && is_array($data['specializations'])) {
-            $userData = $this->userReadRepository->findByEmail($user->getEmail());
+            $userData = $this->userReadRepository->findByEmail(email: $user->getEmail());
             if ($userData) {
                 $userId = $userData['id'];
                 $specializationIds = array_map('intval', $data['specializations']);
-                $this->userSpecializationRepository->saveUserSpecializations($userId, $specializationIds);
+                $this->userSpecializationRepository->saveUserSpecializations(userId: $userId, specializationIds: $specializationIds);
             }
         }
     }
 
     public function updateUser(int $id, array $data): void
     {
-        $this->userUpdateValidator->validate($data);
+        $this->userUpdateValidator->validate(data: $data);
 
-        $userData = $this->userReadRepository->getUserByIdOnly($id);
+        $userData = $this->userReadRepository->getUserByIdOnly(id: $id);
         if (!$userData) throw new UserNotFoundException();
         
-        $user = UserFactory::create($userData);
+        $user = UserFactory::create(data: $userData);
         $isModified = false;
 
         if (isset($data['first_name']) && $user->getFirstName() !== $data['first_name']) {
-            $user->setFirstName($data['first_name']);
+            $user->setFirstName(firstName: $data['first_name']);
             $isModified = true;
         }
         if (isset($data['last_name']) && $user->getLastName() !== $data['last_name']) {
-            $user->setLastName($data['last_name']);
+            $user->setLastName(lastName: $data['last_name']);
             $isModified = true;
         }
         if (isset($data['role']) && $user->getRole() !== $data['role']) {
-            $user->setRole($data['role']);
+            $user->setRole(role: $data['role']);
             $isModified = true;
         }
         if (array_key_exists('biography', $data) && $user->getBiography() !== $data['biography']) {
-            $user->setBiography($data['biography']);
+            $user->setBiography(biography: $data['biography']);
             $isModified = true;
         }
         
         $newPrice = ($data['price'] !== '' && $data['price'] !== null) ? (float)$data['price'] : 0.00;
         if (array_key_exists('price', $data) && $user->getPrice() !== $newPrice) {
-            $user->setPrice($newPrice);
+            $user->setPrice(price: $newPrice);
             $isModified = true;
         }
 
         if ($isModified) {
-            $this->userWriteRepository->updateUser([
+            $this->userWriteRepository->updateUser(params: [
                 $user->getFirstName(),
                 $user->getLastName(),
                 $user->getRole(),
@@ -98,9 +98,9 @@ class UserWriteService implements UserWriteServiceInterface
             if (isset($data['specializations']) && is_array($data['specializations'])) {
                 $specializationIds = array_map('intval', $data['specializations']);
                 
-                $specializationsData = $this->userSpecializationRepository->getUserSpecializations($id);
-                $specializations = UserHelper::setSpecializations($specializationsData);
-                $user->setSpecializations($specializations);
+                $specializationsData = $this->userSpecializationRepository->getUserSpecializations(id: $id);
+                $specializations = UserHelper::setSpecializations(userSqlData: $specializationsData);
+                $user->setSpecializations(specializations: $specializations);
 
                 $currentSpecializationIds = array_map(fn($s) => $s->getId(), $user->getSpecializations());
                 
@@ -109,27 +109,27 @@ class UserWriteService implements UserWriteServiceInterface
                                         array_diff($currentSpecializationIds, $specializationIds) !== [];
                 
                 if ($specializationsChanged) {
-                    $this->userSpecializationRepository->deleteUserSpecializations($user->getId());
-                    $this->userSpecializationRepository->saveUserSpecializations($user->getId(), $specializationIds);
+                    $this->userSpecializationRepository->deleteUserSpecializations(userId: $user->getId());
+                    $this->userSpecializationRepository->saveUserSpecializations(userId: $user->getId(), specializationIds: $specializationIds);
                 }
             } else {
-                $this->userSpecializationRepository->deleteUserSpecializations($user->getId());
+                $this->userSpecializationRepository->deleteUserSpecializations(userId: $user->getId());
             }
         }
     }
 
     public function deleteUser(int $id): void
     {
-        $userData = $this->userReadRepository->getUserByIdOnly($id);
+        $userData = $this->userReadRepository->getUserByIdOnly(id: $id);
         if (!$userData) throw new UserNotFoundException();
         
-        $user = UserFactory::create($userData);
+        $user = UserFactory::create(data: $userData);
         
         if ($user instanceof Mentor) {
-            $this->userSpecializationRepository->deleteUserSpecializations($user->getId());
+            $this->userSpecializationRepository->deleteUserSpecializations(userId: $user->getId());
         }
         
-        $this->userWriteRepository->deleteUser([
+        $this->userWriteRepository->deleteUser(params: [
             date('Y-m-d H:i:s'),
             $user->getEmail() . '_deleted_' . time(),
             $user->getId()

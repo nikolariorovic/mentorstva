@@ -34,7 +34,7 @@ class PaymentValidator extends BaseValidator
                 ],
                 'custom' => [
                     function($value) {
-                        return $this->isValidCardNumber($value) ? true : 'Invalid card number';
+                        return $this->isValidCardNumber(cardNumber: $value) ? true : 'Invalid card number';
                     }
                 ],
                 'messages' => [
@@ -51,7 +51,7 @@ class PaymentValidator extends BaseValidator
                 ],
                 'custom' => [
                     function($value) {
-                        return $this->isValidExpiryDate($value) ? true : 'Invalid expiry date';
+                        return $this->isValidExpiryDate(expiryDate: $value) ? true : 'Invalid expiry date';
                     }
                 ],
                 'messages' => [
@@ -151,7 +151,7 @@ class PaymentValidator extends BaseValidator
     protected function throwValidationException(): void
     {
         $exception = new InvalidPaymentDataException();
-        $exception->setErrors($this->errors);
+        $exception->setErrors(errors: $this->errors);
         throw $exception;
     }
 } 

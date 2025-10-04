@@ -15,16 +15,16 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
                     AND DATE(period) = ? 
                     AND status != 'rejected'";
                   
-            return $this->query($sql, [$mentorId, $date]);
+            return $this->query(sql: $sql, params: [$mentorId, $date]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function bookAppointment(int $mentorId, string $dateTime, int $studentId, float $price, int $specializationId): void
     {
         $sql = "INSERT INTO appointments (mentor_id, period, student_id, price, created_at, specialization_id) VALUES (?, ?, ?, ?, NOW(), ?)";
-        $this->execute($sql, [$mentorId, $dateTime, $studentId, $price, $specializationId]);
+        $this->execute(sql: $sql, params: [$mentorId, $dateTime, $studentId, $price, $specializationId]);
     }
 
     public function getPaginatedAppointments(int $userId, string $role, int $page): array
@@ -52,25 +52,25 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
                     WHERE a.mentor_id = ? AND a.status != 'rejected' 
                     ORDER BY a.created_at DESC LIMIT 10 OFFSET ?";
         }
-        return $this->query($sql, [$userId, ($page - 1) * 10]);
+        return $this->query(sql: $sql, params: [$userId, ($page - 1) * 10]);
     }
 
     public function updateAppointmentStatus(int $appointmentId, string $status): void
     {
         $sql = "UPDATE appointments SET status = ? WHERE id = ?";
-        $this->execute($sql, [$status, $appointmentId]);
+        $this->execute(sql: $sql, params: [$status, $appointmentId]);
     }
 
     public function updatePaymentStatus(int $appointmentId, string $paymentStatus, bool $isPaid = false): void
     {
         $sql = "UPDATE appointments SET status = ?, payment_status = ? WHERE id = ?";
-        $this->execute($sql, [$paymentStatus, $isPaid, $appointmentId]);
+        $this->execute(sql: $sql, params: [$paymentStatus, $isPaid, $appointmentId]);
     }
 
     public function submitRating(int $appointmentId, int $rating, string $comment): void
     {
         $sql = "UPDATE appointments SET rating = ?, comment = ? WHERE id = ?";
-        $this->execute($sql, [$rating, $comment, $appointmentId]);
+        $this->execute(sql: $sql, params: [$rating, $comment, $appointmentId]);
     }
 
     public function getAppointmentsForDashboard(): array
@@ -90,13 +90,13 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
             ORDER BY
                 DATE_FORMAT(period, '%Y-%m') ASC
         ";
-        return $this->query($sql);
+        return $this->query(sql: $sql);
     }
 
     public function getSumOfProfit(): array
     {
         $sql = "SELECT SUM(price) AS total_profit FROM appointments WHERE status = 'finished'";
-        return $this->query($sql);
+        return $this->query(sql: $sql);
     }
 
     public function getMostActiveAndMostRatedMentors(): array
@@ -126,6 +126,6 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
                 avg_rating DESC
             LIMIT 10
         ";
-        return $this->query($sql);
+        return $this->query(sql: $sql);
     }
 }

@@ -10,19 +10,19 @@ class DashboardController extends Controller
     {
 
     }
-    public function index()
+    public function index(): void
     {
         try {
             $totalData = $this->appointmentReadService->getAppointmentsForDashboard();
-            return $this->view('admin/dashboard', 
+            $this->view(view: 'admin/dashboard', data:
             [
                 'appointments' => $totalData['appointments'], 
                 'profit' => $totalData['profit'], 
                 'mentors' => $totalData['mostActiveAndMostRatedMentors']
             ]);
         } catch (\Throwable $e) {
-            $this->handleException($e);
-            return $this->view('admin/dashboard');
+            $this->handleException(e: $e);
+            $this->view(view: 'admin/dashboard');
         }
     }
 }

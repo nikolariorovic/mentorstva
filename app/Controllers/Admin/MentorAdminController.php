@@ -15,28 +15,28 @@ class MentorAdminController extends Controller
     ) {
 
     }
-    public function index()
+    public function index(): void
     {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0
             ? (int) $_GET['page']
             : 1;
         
         try {
-            $appointments = $this->appointmentReadService->getPaginatedAppointments($page);
-            return $this->view('mentor/index', ['appointments' => $appointments]);
+            $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
+            $this->view(view: 'mentor/index', data: ['appointments' => $appointments]);
         } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->view('mentor/index');
+            $this->handleException(e: $e);
+            $this->view(view: 'mentor/index');
         }
     }
-    public function updateAppointmentStatus()
+    public function updateAppointmentStatus(): void
     {
         try {
-            $this->appointmentWriteService->updateAppointmentStatus($_POST);
-            return $this->json(['success' => true]);
+            $this->appointmentWriteService->updateAppointmentStatus(data: $_POST);
+            $this->json(data: ['success' => true]);
         } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->json(['success' => false]);
+            $this->handleException(e: $e);
+            $this->json(data: ['success' => false]);
         }
     }
 }

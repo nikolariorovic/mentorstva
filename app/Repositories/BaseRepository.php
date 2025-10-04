@@ -22,7 +22,7 @@ class BaseRepository {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }  
     }
 
@@ -34,7 +34,7 @@ class BaseRepository {
             }
             return $stmt->execute();
         } catch (PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
@@ -44,13 +44,13 @@ class BaseRepository {
             $stmt->execute($params);
             return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
         } catch (PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     protected function handleDatabaseError(PDOException $e): void {
         logError('Database error: ' . $e->getMessage());
-        throw new DatabaseException("Database error: " . $e->getMessage());
+        throw new DatabaseException(message: "Database error: " . $e->getMessage());
     }
 
     protected function getLastInsertId(): int {

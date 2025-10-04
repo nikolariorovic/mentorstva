@@ -22,7 +22,7 @@ final class PaymentRepository extends BaseRepository implements PaymentRepositor
             created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
         
-        $this->execute($sql, [
+        $this->execute(sql: $sql, params: [
             $paymentData['appointment_id'],
             $paymentData['student_id'],
             $paymentData['price'],
@@ -38,7 +38,7 @@ final class PaymentRepository extends BaseRepository implements PaymentRepositor
     public function updatePaymentStatus(int $paymentId, string $status): void
     {
         $sql = "UPDATE payments SET status = ? WHERE id = ?";
-        $this->execute($sql, [$status, $paymentId]);
+        $this->execute(sql: $sql, params: [$status, $paymentId]);
     }
     
     public function getPayments(int $page): array
@@ -52,12 +52,12 @@ final class PaymentRepository extends BaseRepository implements PaymentRepositor
                 ORDER BY p.created_at DESC 
                 LIMIT 10 OFFSET ?";
         
-        return $this->query($sql, [($page - 1) * 10]);
+        return $this->query(sql: $sql, params: [($page - 1) * 10]);
     }
 
     public function paymentsAccepted(int $id): void
     {
         $sql = "UPDATE payments SET status = 'confirmed' WHERE id = ?";
-        $this->execute($sql, [$id]);
+        $this->execute(sql: $sql, params: [$id]);
     }
 } 

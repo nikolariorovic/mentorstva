@@ -110,7 +110,7 @@ abstract class User
     public function setFirstName(string $firstName): self
     {
         if (empty($firstName)) {
-            throw new InvalidArgumentException('First name cannot be empty');
+            throw new InvalidArgumentException(message: 'First name cannot be empty');
         }
         $this->first_name = $firstName;
 
@@ -120,7 +120,7 @@ abstract class User
     public function setLastName(string $lastName): self
     {
         if (empty($lastName)) {
-            throw new InvalidArgumentException('Last name cannot be empty');
+            throw new InvalidArgumentException(message: 'Last name cannot be empty');
         }
         $this->last_name = $lastName;
 
@@ -130,7 +130,7 @@ abstract class User
     public function setEmail(string $email): self
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Invalid email format');
+            throw new InvalidArgumentException(message: 'Invalid email format');
         }
         $this->email = $email;
 
@@ -155,7 +155,7 @@ abstract class User
     {
         $allowedRoles = [UserRole::ADMIN->value, UserRole::MENTOR->value, UserRole::STUDENT->value];
         if (!in_array($role, $allowedRoles)) {
-            throw new InvalidArgumentException('Invalid role. Must be one of: ' . implode(', ', $allowedRoles));
+            throw new InvalidArgumentException(message: 'Invalid role. Must be one of: ' . implode(', ', $allowedRoles));
         }
         $this->role = $role;
 
@@ -165,7 +165,7 @@ abstract class User
     public function setPrice(?float $price): self
     {
         if ($price !== null && $price < 0) {
-            throw new InvalidArgumentException('Price cannot be negative');
+            throw new InvalidArgumentException(message: 'Price cannot be negative');
         }
         $this->price = $price;
 

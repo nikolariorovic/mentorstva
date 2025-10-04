@@ -16,9 +16,9 @@ class AuthService implements AuthServiceInterface
     
     public function attempt(string $email, string $password): ?User
     {
-        $user = $this->userReadRepository->findByEmail($email);
-        $user = $user ? UserFactory::create($user) : null;
-        if ($user && $user->verifyPassword($password)) {   
+        $user = $this->userReadRepository->findByEmail(email: $email);
+        $user = $user ? UserFactory::create(data: $user) : null;
+        if ($user && $user->verifyPassword(password: $password)) {
             return $user;
         }
         throw new UserNotFoundException();

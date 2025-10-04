@@ -14,10 +14,10 @@ class UserFactory implements UserFactoryInterface
     public static function create(array $data): User
     {
         return match($data['role']) {
-            UserRole::ADMIN->value => new Admin($data),
-            UserRole::MENTOR->value => new Mentor($data),
-            UserRole::STUDENT->value => new Student($data),
-            default => throw new InvalidArgumentException('Invalid user role')
+            UserRole::ADMIN->value => new Admin(data: $data),
+            UserRole::MENTOR->value => new Mentor(data: $data),
+            UserRole::STUDENT->value => new Student(data: $data),
+            default => throw new InvalidArgumentException(message: 'Invalid user role')
         };
     }
 }

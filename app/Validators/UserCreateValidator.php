@@ -82,7 +82,7 @@ class UserCreateValidator extends BaseValidator
     protected function throwValidationException(): void
     {
         $exception = new InvalidUserDataException();
-        $exception->setErrors($this->errors);
+        $exception->setErrors(errors: $this->errors);
         throw $exception;
     }
 } 

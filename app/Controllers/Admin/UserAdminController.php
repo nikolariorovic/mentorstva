@@ -24,76 +24,74 @@ class UserAdminController extends Controller
 
     }
 
-    public function index()
+    public function index(): void
     {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0
             ? (int) $_GET['page']
             : 1;
       
         try {
-            $users = $this->userReadService->getPaginatedUsers($page);
+            $users = $this->userReadService->getPaginatedUsers(page: $page);
             $specializations = $this->specializationService->getAllSpecializations();
-            return $this->view('admin/index', ['users' => $users, 'specializations' => $specializations]);
+            $this->view(view: 'admin/index', data: ['users' => $users, 'specializations' => $specializations]);
         } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->view('admin/index');
+            $this->handleException(e: $e);
+            $this->view(view: 'admin/index');
         }
     }
 
-    public function create()
+    public function create(): void
     { 
         try {
-            $this->userWriteService->createUser($_POST);
+            $this->userWriteService->createUser(data: $_POST);
             $_SESSION['success'] = 'User created successfully';
-            return $this->redirect('/admin/users');
+            $this->redirect(url: '/admin/users');
         } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->redirect('/admin/users');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/admin/users');
         }
     }
 
-    public function show(int $id)
+    public function show(int $id): void
     { 
         try {
-            $user = $this->userReadService->getUserById($id);
+            $user = $this->userReadService->getUserById(id: $id);
             $specializations = $this->specializationService->getAllSpecializations();
-            return $this->view('admin/show', ['user' => $user, 'specializations' => $specializations]);
+            $this->view(view: 'admin/show', data: ['user' => $user, 'specializations' => $specializations]);
         } catch (DatabaseException|UserNotFoundException $e) {
-            $this->handleException($e);
-            return match (true) {
-                $e instanceof DatabaseException => $this->view('admin/show', ['user' => null, 'specializations' => []]),
-                $e instanceof UserNotFoundException => $this->redirect('/admin/users'),
-                default => $this->redirect('/'),
+            $this->handleException(e: $e);
+            match (true) {
+                $e instanceof DatabaseException => $this->view(view: 'admin/show', data: ['user' => null, 'specializations' => []]),
+                $e instanceof UserNotFoundException => $this->redirect(url: '/admin/users'),
+                default => $this->redirect(url: '/'),
             };
         }
     }
 
-    public function update(int $id)
+    public function update(int $id): void
     {
         try {
-            $this->userWriteService->updateUser($id, $_POST);
+            $this->userWriteService->updateUser(id: $id, data: $_POST);
             $_SESSION['success'] = 'User updated successfully';
-            return $this->redirect('/admin/users/' . $id);
+            $this->redirect(url: '/admin/users/' . $id);
         } catch (DatabaseException|InvalidUserDataException|UserNotFoundException|\Throwable $e) {
-            $this->handleException($e);
-            return match (true) {
-                $e instanceof DatabaseException => $this->redirect('/admin/users/' . $id),
-                $e instanceof InvalidUserDataException => $this->redirect('/admin/users/' . $id),
-                $e instanceof UserNotFoundException => $this->redirect('/admin/users'),
-                default => $this->redirect('/admin/users'),
+            $this->handleException(e: $e);
+            match (true) {
+                $e instanceof DatabaseException, $e instanceof InvalidUserDataException => $this->redirect(url: '/admin/users/' . $id),
+                default => $this->redirect(url: '/admin/users'),
             };
         }
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         try {
-            $this->userWriteService->deleteUser($id);
+            $this->userWriteService->deleteUser(id: $id);
             $_SESSION['success'] = 'User deleted successfully';
-            return $this->redirect('/admin/users');
+            $this->redirect(url: '/admin/users');
         } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->redirect('/admin/users');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/admin/users');
         }
     }
 }

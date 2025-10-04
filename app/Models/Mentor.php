@@ -10,10 +10,10 @@ class Mentor extends User
 
     public function __construct(array $data = [])
     {
-        parent::__construct($data);
-        $this->setRole(UserRole::MENTOR->value);
+        parent::__construct(data: $data);
+        $this->setRole(role: UserRole::MENTOR->value);
         if (isset($data['price'])) {
-            $this->setPrice((float)$data['price']);
+            $this->setPrice(price: (float)$data['price']);
         }
     }
 

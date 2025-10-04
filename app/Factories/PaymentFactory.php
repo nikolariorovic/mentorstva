@@ -10,6 +10,6 @@ final class PaymentFactory
 {
     public static function create(array $data): Payment
     {
-        return new Payment($data);
+        return new Payment(data: $data);
     }
 } 

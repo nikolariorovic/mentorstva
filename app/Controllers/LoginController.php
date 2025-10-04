@@ -12,21 +12,23 @@ class LoginController extends Controller
 
     }
 
-    public function login() {
+    public function login(): void
+    {
         $email = $_POST['email'];
         $password = $_POST['password'];
         try {
-            $user = $this->authService->attempt($email, $password);
-            $this->authService->login($user);
-            $this->redirect('/');
+            $user = $this->authService->attempt(email: $email, password: $password);
+            $this->authService->login(user: $user);
+            $this->redirect(url: '/');
         } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->redirect('/');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/');
         }
     }
 
-    public function logout() {
+    public function logout(): void
+    {
         $this->authService->logout();
-        $this->redirect('/');
+        $this->redirect(url: '/');
     }
 }

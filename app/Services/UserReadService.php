@@ -21,21 +21,21 @@ class UserReadService implements UserReadServiceInterface
 
     public function getPaginatedUsers(int $page): array
     {
-        $users = $this->userReadRepository->getAllUsers($page);
-        return array_map(fn($userData) => UserFactory::create($userData), $users);
+        $users = $this->userReadRepository->getAllUsers(page: $page);
+        return array_map(fn($userData) => UserFactory::create(data: $userData), $users);
     }
 
     public function getUserById(int $id): ?User
     {
-        $userData = $this->userReadRepository->getUserByIdOnly($id);
+        $userData = $this->userReadRepository->getUserByIdOnly(id: $id);
         if (!$userData) throw new UserNotFoundException();
         
-        $user = UserFactory::create($userData);
+        $user = UserFactory::create(data: $userData);
 
         if ($user instanceof Mentor) {
-            $specializationsData = $this->userSpecializationRepository->getUserSpecializations($id);
-            $specializations = UserHelper::setSpecializations($specializationsData);
-            $user->setSpecializations($specializations);
+            $specializationsData = $this->userSpecializationRepository->getUserSpecializations(id: $id);
+            $specializations = UserHelper::setSpecializations(userSqlData: $specializationsData);
+            $user->setSpecializations(specializations: $specializations);
         }
         
         return $user;
@@ -43,6 +43,6 @@ class UserReadService implements UserReadServiceInterface
 
     public function getMentorsBySpecialization(int $specializationId): array
     {
-        return $this->userReadRepository->getMentorsBySpecialization($specializationId);
+        return $this->userReadRepository->getMentorsBySpecialization(specializationId: $specializationId);
     }
 }

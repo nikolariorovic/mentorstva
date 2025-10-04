@@ -13,7 +13,7 @@ class PaymentController extends Controller
 
     }
 
-    public function processPayment()
+    public function processPayment(): void
     {
         try {
             $gateway = $_POST['gateway'] ?? null;
@@ -21,12 +21,12 @@ class PaymentController extends Controller
             $paymentData = $_POST;
             unset($paymentData['gateway']);
             
-            if ($gateway !== null && !$this->paymentService->isGatewayAvailable($gateway)) {
+            if ($gateway !== null && !$this->paymentService->isGatewayAvailable(gatewayName: $gateway)) {
                 $_SESSION['error'] = 'Invalid payment gateway';
-                return $this->redirect('/appointments');
+                $this->redirect(url: '/appointments');
             }
     
-            $result = $this->paymentService->processPayment($gateway, $paymentData);
+            $result = $this->paymentService->processPayment(gatewayName: $gateway, data: $paymentData);
             
             if ($result['success']) {
                 $_SESSION['success'] = 'Payment processed successfully!';
@@ -34,11 +34,11 @@ class PaymentController extends Controller
                 $_SESSION['error'] = 'Payment failed: ' . ($result['message'] ?? 'Unknown error');
             }
             
-            return $this->redirect('/appointments');
+            $this->redirect(url: '/appointments');
             
         } catch (InvalidArgumentException|InvalidPaymentDataException|\Exception $e) {
-            $this->handleException($e);
-            return $this->redirect('/appointments');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/appointments');
         }
     }
 
@@ -49,22 +49,22 @@ class PaymentController extends Controller
         : 1;
 
         try {
-            $payments = $this->paymentService->getPayments($page);
-            return $this->view('admin/payments', ['payments' => $payments]);
+            $payments = $this->paymentService->getPayments(page: $page);
+            $this->view(view: 'admin/payments', data: ['payments' => $payments]);
         } catch (DatabaseException|\Exception $e) {
-            $this->handleException($e);
-            return $this->redirect('/admin/payments');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/admin/payments');
         }
     }
 
-    public function paymentsAccepted($id)
+    public function paymentsAccepted($id): void
     {
         try {
-            $payments = $this->paymentService->paymentsAccepted($id);
-            return $this->redirect('/admin/payments');
+            $this->paymentService->paymentsAccepted(id: $id);
+            $this->redirect(url: '/admin/payments');
         } catch (DatabaseException|\Exception $e) {
-            $this->handleException($e);
-            return $this->redirect('/admin/payments');
+            $this->handleException(e: $e);
+            $this->redirect(url: '/admin/payments');
         }
     }
 }

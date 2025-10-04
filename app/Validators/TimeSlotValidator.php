@@ -52,7 +52,7 @@ class TimeSlotValidator extends BaseValidator
     protected function throwValidationException(): void
     {
         $exception = new InvalidTimeSlotDataException();
-        $exception->setErrors($this->errors);
+        $exception->setErrors(errors: $this->errors);
         throw $exception;
     }
 } 

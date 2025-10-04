@@ -7,7 +7,7 @@ class Admin extends User
 {
     public function __construct(array $data = [])
     {
-        parent::__construct($data);
-        $this->setRole(UserRole::ADMIN->value);
+        parent::__construct(data: $data);
+        $this->setRole(role: UserRole::ADMIN->value);
     }
 } 

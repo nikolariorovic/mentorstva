@@ -22,94 +22,100 @@ class StudentController extends Controller
 
     }
 
-    public function index() {
+    public function index(): void
+    {
         try {
             $specializations = $this->specializationService->getAllSpecializations();
-            return $this->view('student/index', ['specializations' => $specializations]);
+            $this->view(view: 'student/index', data: ['specializations' => $specializations]);
         } catch (DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->view('student/index');
+            $this->handleException(e: $e);
+            $this->view(view: 'student/index');
         }
     }
 
-    public function getMentorBySpecialization(int $specializationId) {
+    public function getMentorBySpecialization(int $specializationId): void
+    {
         try {
-            $mentors = $this->userReadService->getMentorsBySpecialization($specializationId);
-            return $this->json([
+            $mentors = $this->userReadService->getMentorsBySpecialization(specializationId: $specializationId);
+            $this->json(data: [
                 'success' => true,
                 'mentors' => $mentors
             ]);
         } catch (DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->json([
+            $this->handleException(e: $e);
+            $this->json(data: [
                 'success' => false,
                 'message' => 'Error. Something went wrong'
             ]);
         }
     }
 
-    public function getAvailableTimeSlots() {
+    public function getAvailableTimeSlots(): void
+    {
         try {
-            $slots = $this->appointmentReadService->getAvailableTimeSlots($_GET);
-            return $this->json([
+            $slots = $this->appointmentReadService->getAvailableTimeSlots(data: $_GET);
+            $this->json(data: [
                 'success' => true,
                 'slots' => $slots
             ]);
         } catch (InvalidTimeSlotDataException $e) {
-            return $this->json(json_decode((string) $e, true));
+            $this->json(data: json_decode((string) $e, true));
         } catch (DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->json([
+            $this->handleException(e: $e);
+            $this->json(data: [
                 'success' => false,
                 'message' => 'Error. Something went wrong'
             ]);
         }
     }
 
-    public function bookAppointment() {
+    public function bookAppointment(): void
+    {
         try {
-            $this->appointmentWriteService->bookAppointment($_POST);
-            return $this->json([
+            $this->appointmentWriteService->bookAppointment(data: $_POST);
+            $this->json(data: [
                 'success' => true,
                 'message' => 'Appointment booked successfully'
             ]);
         } catch (InvalidBookingDataException $e) {
-            return $this->json(json_decode((string) $e, true));
+            $this->json(data: json_decode((string) $e, true));
         } catch (InvalidArgumentException|DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->json([
+            $this->handleException(e: $e);
+            $this->json(data: [
                 'success' => false,
                 'message' => 'Error. Something went wrong'
             ]);
         }
     }
 
-    public function appointments() {
+    public function appointments(): void
+    {
         try {
             $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0
             ? (int) $_GET['page']
             : 1;
 
-            $appointments = $this->appointmentReadService->getPaginatedAppointments($page);
-            return $this->view('student/appointments', ['appointments' => $appointments]);
+            $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
+            $this->view(view: 'student/appointments',data: ['appointments' => $appointments]);
         } catch (DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->view('student/appointments');
+            $this->handleException(e: $e);
+            $this->view(view: 'student/appointments');
         }
     }
 
-    public function submitRating() {
+    public function submitRating(): void
+    {
         try {
-            $this->appointmentWriteService->submitRating($_POST);
-            return $this->json([
+            $this->appointmentWriteService->submitRating(data: $_POST);
+            $this->json(data: [
                 'success' => true,
                 'message' => 'Rating submitted successfully'
             ]);
         } catch (InvalidArgumentException $e) {
-            return $this->json(json_decode((string) $e, true));
+            $this->json(data: json_decode((string) $e, true));
         } catch (DatabaseException|\Throwable $e) {
-            $this->handleException($e);
-            return $this->json(json_decode((string) $e, true));
+            $this->handleException(e: $e);
+            $this->json(data: json_decode((string) $e, true));
         }
     }
 }

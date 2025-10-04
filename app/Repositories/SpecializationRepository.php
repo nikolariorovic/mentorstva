@@ -8,9 +8,9 @@ final class SpecializationRepository extends BaseRepository implements Specializ
     public function getAll(): array
     {
         try {
-            return $this->query('SELECT * FROM specializations ORDER BY name ASC');
+            return $this->query(sql: 'SELECT * FROM specializations ORDER BY name ASC');
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 } 

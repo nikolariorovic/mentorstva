@@ -40,6 +40,6 @@ class RatingValidator extends BaseValidator {
 
     protected function throwValidationException(): void
     {
-        throw new InvalidArgumentException('Invalid rating data');
+        throw new InvalidArgumentException(message: 'Invalid rating data');
     }
 }

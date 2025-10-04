@@ -9,23 +9,23 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
 
     public function findByEmail(string $email): ?array{
         try {
-            return $this->queryOne('SELECT * FROM users WHERE email = ? and deleted_at is null', [$email]); 
+            return $this->queryOne(sql: 'SELECT * FROM users WHERE email = ? and deleted_at is null', params: [$email]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function getUserById(int $id): ?array
     {
-        return $this->getUserBy('id', $id);
+        return $this->getUserBy(column: 'id', value: $id);
     }
 
     public function getUserByIdOnly(int $id): ?array
     {
         try {
-            return $this->queryOne('SELECT * FROM users WHERE id = ? AND deleted_at IS NULL', [$id]);
+            return $this->queryOne(sql: 'SELECT * FROM users WHERE id = ? AND deleted_at IS NULL', params: [$id]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
@@ -43,9 +43,9 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
                     LEFT JOIN specializations s ON us.specialization_id = s.id
                     WHERE u.id = ? AND u.deleted_at IS NULL";
             
-            return $this->query($sql, [$id]);
+            return $this->query(sql: $sql, params: [$id]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
@@ -64,43 +64,43 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
                 WHERE u.{$column} = ? AND u.deleted_at IS NULL";
 
         try {
-            return $this->query($sql, [$value]);
+            return $this->query(sql: $sql, params: [$value]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function getAllUsers(int $page): array {
         try {
-            return $this->query('SELECT * FROM users WHERE deleted_at is null LIMIT 10 OFFSET ?', [($page - 1) * 10]);
+            return $this->query(sql: 'SELECT * FROM users WHERE deleted_at is null LIMIT 10 OFFSET ?', params: [($page - 1) * 10]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function createUser(array $params): void {
         try {
-            $this->execute('INSERT INTO users (first_name, last_name, email, password, biography, price, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', $params);
+            $this->execute(sql: 'INSERT INTO users (first_name, last_name, email, password, biography, price, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', params: $params);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function updateUser(array $params): void
     {
         try {
-            $this->execute("UPDATE users SET first_name = ?, last_name = ?, role = ?, biography = ?, price = ?, updated_at = ? WHERE id = ?", $params);
+            $this->execute(sql: "UPDATE users SET first_name = ?, last_name = ?, role = ?, biography = ?, price = ?, updated_at = ? WHERE id = ?", params: $params);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function deleteUser(array $params): void
     {
         try {
-            $this->execute('UPDATE users SET deleted_at = ?, email = ? WHERE id = ?', $params);
+            $this->execute(sql: 'UPDATE users SET deleted_at = ?, email = ? WHERE id = ?', params: $params);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
@@ -115,18 +115,18 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
             }
             
             $sql = "INSERT INTO user_specializations (user_id, specialization_id) VALUES {$placeholders}";
-            $this->execute($sql, $params);
+            $this->execute(sql: $sql, params: $params);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
     public function deleteUserSpecializations(int $userId): void
     {
         try {
-            $this->execute('DELETE FROM user_specializations WHERE user_id = ?', [$userId]);
+            $this->execute(sql: 'DELETE FROM user_specializations WHERE user_id = ?', params: [$userId]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 
@@ -139,9 +139,9 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
                     WHERE us.specialization_id = ? AND u.role = 'mentor' AND u.deleted_at IS NULL
                     ORDER BY u.first_name, u.last_name";
             
-            return $this->query($sql, [$specializationId]);
+            return $this->query(sql: $sql, params: [$specializationId]);
         } catch (\PDOException $e) {
-            $this->handleDatabaseError($e);
+            $this->handleDatabaseError(e: $e);
         }
     }
 }

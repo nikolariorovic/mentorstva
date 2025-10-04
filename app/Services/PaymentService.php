@@ -38,10 +38,10 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
     {
         $user = $this->sessionService->getSession();
         if (!$user || !$user['id'] || $user['role'] !== UserRole::STUDENT->value) {
-            throw new InvalidArgumentException('User not authenticated. Please login again.');
+            throw new InvalidArgumentException(message: 'User not authenticated. Please login again.');
         }
 
-        $this->paymentValidator->validate($data);
+        $this->paymentValidator->validate(data: $data);
        
         if ($gatewayName === null) {
             if (empty($this->gateways)) {
@@ -60,7 +60,7 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
 
         $gateway = $this->gateways[$gatewayName];
         
-        $result = $gateway->charge($data);
+        $result = $gateway->charge(data: $data);
         
         $payment = PaymentFactory::create([
             'appointment_id' => (int) $data['appointment_id'],
@@ -72,9 +72,9 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
             'card_number' => $data['card_number'] ?  substr($data['card_number'], -4) : null
         ]);
 
-        $paymentId = $this->paymentRepository->savePayment($payment->toArray());
+        $paymentId = $this->paymentRepository->savePayment(paymentData: $payment->toArray());
         if ($result['success']) {
-            $this->appointmentWriteService->updatePaymentStatus($payment->getAppointmentId(), 'paid', true);
+            $this->appointmentWriteService->updatePaymentStatus(appointmentId: $payment->getAppointmentId(), paymentStatus: 'paid', isPaid: true);
         }
         
         return $result;
@@ -92,11 +92,11 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
 
     public function getPayments(int $page): array
     {
-        return $this->paymentRepository->getPayments($page);
+        return $this->paymentRepository->getPayments(page: $page);
     }
 
     public function paymentsAccepted(int $id): void
     {
-        $this->paymentRepository->paymentsAccepted($id);
+        $this->paymentRepository->paymentsAccepted(id: $id);
     }
 } 

@@ -79,7 +79,7 @@ class Payment
     public function setAppointmentId(int $appointmentId): self
     {
         if ($appointmentId <= 0) {
-            throw new InvalidArgumentException('Appointment ID must be positive');
+            throw new InvalidArgumentException(message: 'Appointment ID must be positive');
         }
         $this->appointment_id = $appointmentId;
 
@@ -89,7 +89,7 @@ class Payment
     public function setStudentId(int $studentId): self
     {
         if ($studentId <= 0) {
-            throw new InvalidArgumentException('Student ID must be positive');
+            throw new InvalidArgumentException(message: 'Student ID must be positive');
         }
         $this->student_id = $studentId;
 
@@ -99,7 +99,7 @@ class Payment
     public function setPrice(float $price): self
     {
         if ($price <= 0) {
-            throw new InvalidArgumentException('Price cannot be negative');
+            throw new InvalidArgumentException(message: 'Price cannot be negative');
         }
         $this->price = $price;
 
@@ -110,7 +110,7 @@ class Payment
     {
         $allowedStatuses = ['pending', 'confirmed','failed'];
         if (!in_array($status, $allowedStatuses)) {
-            throw new InvalidArgumentException('Invalid status. Must be one of: ' . implode(', ', $allowedStatuses));
+            throw new InvalidArgumentException(message: 'Invalid status. Must be one of: ' . implode(', ', $allowedStatuses));
         }
         $this->status = $status;
 
@@ -120,7 +120,7 @@ class Payment
     public function setMethod(string $method): self
     {
         if (empty(trim($method))) {
-            throw new InvalidArgumentException('Invalid payment method.');
+            throw new InvalidArgumentException(message: 'Invalid payment method.');
         }
         $this->method = $method;
 
@@ -130,7 +130,7 @@ class Payment
     public function setTransactionId(string $transactionId): self
     {
         if (empty(trim($transactionId))) {
-            throw new InvalidArgumentException('Transaction ID cannot be empty');
+            throw new InvalidArgumentException(message: 'Transaction ID cannot be empty');
         }
         $this->transaction_id = $transactionId;
 
@@ -140,7 +140,7 @@ class Payment
     public function setCardNumber(string $cardNumber): self
     {
         if (empty(trim($cardNumber))) {
-            throw new InvalidArgumentException('Card number cannot be empty');
+            throw new InvalidArgumentException(message: 'Card number cannot be empty');
         }
         $this->card_number = $cardNumber;
 

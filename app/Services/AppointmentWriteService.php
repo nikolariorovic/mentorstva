@@ -24,30 +24,30 @@ class AppointmentWriteService implements AppointmentWriteServiceInterface
     {
         $user = $this->sessionService->getSession();
         if (!$user || !$user['id']) {
-            throw new \InvalidArgumentException('User not authenticated. Please login again.');
+            throw new \InvalidArgumentException(message: 'User not authenticated. Please login again.');
         }
 
-        $this->bookingValidator->validate($data);
+        $this->bookingValidator->validate(data: $data);
         
         $dateTime = strpos($data['time'], ' ') !== false ? $data['time'] : $data['date'] . ' ' . $data['time'];
         
-        $this->appointmentRepository->bookAppointment($data['mentor_id'], $dateTime, $user['id'], $data['price'], $data['specialization_id']);
+        $this->appointmentRepository->bookAppointment(mentorId: $data['mentor_id'], dateTime: $dateTime, studentId: $user['id'], price: $data['price'], specializationId: $data['specialization_id']);
     }
 
     public function updateAppointmentStatus(array $data): void
     {
-        $this->updateAppointmentStatusValidator->validate($data);
-        $this->appointmentRepository->updateAppointmentStatus($data['appointment_id'], $data['status']);
+        $this->updateAppointmentStatusValidator->validate(data: $data);
+        $this->appointmentRepository->updateAppointmentStatus(appointmentId: $data['appointment_id'], status: $data['status']);
     }
 
     public function updatePaymentStatus(int $appointmentId, string $paymentStatus, bool $isPaid = false): void
     {
-        $this->appointmentRepository->updatePaymentStatus($appointmentId, $paymentStatus, $isPaid);
+        $this->appointmentRepository->updatePaymentStatus(appointmentId: $appointmentId, paymentStatus: $paymentStatus, isPaid: $isPaid);
     }
 
     public function submitRating(array $data): void
     {
-        $this->ratingValidator->validate($data);
-        $this->appointmentRepository->submitRating($data['appointment_id'], $data['rating'], $data['comment']);
+        $this->ratingValidator->validate(data: $data);
+        $this->appointmentRepository->submitRating(appointmentId: $data['appointment_id'], rating: $data['rating'], comment: $data['comment']);
     }
 }

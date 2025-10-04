@@ -16,6 +16,6 @@ class SpecializationService implements SpecializationServiceInterface
     public function getAllSpecializations(): array
     {
         $specializations = $this->specializationRepository->getAll();
-        return array_map(fn($specialization) => SpecializationFactory::create($specialization), $specializations);
+        return array_map(fn($specialization) => SpecializationFactory::create(data: $specialization), $specializations);
     }
 }
