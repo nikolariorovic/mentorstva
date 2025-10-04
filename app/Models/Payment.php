@@ -16,16 +16,20 @@ class Payment
     protected string $card_number = '';
     protected DateTime $created_at;
 
+    /**
+     * @throws \DateMalformedStringException
+     * @throws InvalidArgumentException
+     */
     public function __construct(array $data = [])
     {
         if (!empty($data)) {
-            $this->setAppointmentId($data['appointment_id'] ?? 0);
-            $this->setStudentId($data['student_id'] ?? 0);
-            $this->setPrice($data['price'] ?? 0.0);
-            $this->setStatus($data['status'] ?? 'pending');
-            $this->setMethod($data['method'] ?? '');
-            $this->setTransactionId($data['transaction_id'] ?? '');
-            $this->setCardNumber($data['card_number'] ?? '');
+            $this->setAppointmentId($data['appointment_id'] ?? 0)
+            ->setStudentId($data['student_id'] ?? 0)
+            ->setPrice($data['price'] ?? 0.0)
+            ->setStatus($data['status'] ?? 'pending')
+            ->setMethod($data['method'] ?? '')
+            ->setTransactionId($data['transaction_id'] ?? '')
+            ->setCardNumber($data['card_number'] ?? '');
             $this->created_at = isset($data['created_at']) 
                 ? new DateTime($data['created_at']) 
                 : new DateTime();
@@ -72,61 +76,75 @@ class Payment
         return $this->created_at;
     }
 
-    public function setAppointmentId(int $appointmentId): void
+    public function setAppointmentId(int $appointmentId): self
     {
         if ($appointmentId <= 0) {
             throw new InvalidArgumentException('Appointment ID must be positive');
         }
         $this->appointment_id = $appointmentId;
+
+        return $this;
     }
 
-    public function setStudentId(int $studentId): void
+    public function setStudentId(int $studentId): self
     {
         if ($studentId <= 0) {
             throw new InvalidArgumentException('Student ID must be positive');
         }
         $this->student_id = $studentId;
+
+        return $this;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(float $price): self
     {
         if ($price <= 0) {
             throw new InvalidArgumentException('Price cannot be negative');
         }
         $this->price = $price;
+
+        return $this;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $allowedStatuses = ['pending', 'confirmed','failed'];
         if (!in_array($status, $allowedStatuses)) {
             throw new InvalidArgumentException('Invalid status. Must be one of: ' . implode(', ', $allowedStatuses));
         }
         $this->status = $status;
+
+        return $this;
     }
 
-    public function setMethod(string $method): void
+    public function setMethod(string $method): self
     {
         if (empty(trim($method))) {
             throw new InvalidArgumentException('Invalid payment method.');
         }
         $this->method = $method;
+
+        return $this;
     }
 
-    public function setTransactionId(string $transactionId): void
+    public function setTransactionId(string $transactionId): self
     {
         if (empty(trim($transactionId))) {
             throw new InvalidArgumentException('Transaction ID cannot be empty');
         }
         $this->transaction_id = $transactionId;
+
+        return $this;
     }
 
-    public function setCardNumber(string $cardNumber): void
+    public function setCardNumber(string $cardNumber): self
     {
         if (empty(trim($cardNumber))) {
             throw new InvalidArgumentException('Card number cannot be empty');
         }
         $this->card_number = $cardNumber;
+
+        return $this;
     }
 
     public function toArray(): array

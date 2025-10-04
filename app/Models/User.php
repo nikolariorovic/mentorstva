@@ -19,15 +19,19 @@ abstract class User
     protected DateTime $updated_at;
     protected ?DateTime $deleted_at = null;
 
+    /**
+     * @throws \DateMalformedStringException
+     * @throws InvalidArgumentException
+     */
     public function __construct(array $data = [])
     {
         if (!empty($data)) {
             $this->id = $data['id'] ?? null;
-            $this->setFirstName($data['first_name'] ?? '');
-            $this->setLastName($data['last_name'] ?? '');
-            $this->setEmail($data['email'] ?? '');
-            $this->setBiography($data['biography'] ?? '');
-            $this->created_at = isset($data['created_at']) 
+            $this->setFirstName($data['first_name'] ?? '')
+            ->setLastName($data['last_name'] ?? '')
+            ->setEmail($data['email'] ?? '')
+            ->setBiography($data['biography'] ?? '');
+            $this->created_at = isset($data['created_at'])
                 ? new DateTime($data['created_at']) 
                 : new DateTime();
             $this->updated_at = isset($data['updated_at']) 
@@ -103,55 +107,69 @@ abstract class User
         return $this->price;
     }
 
-    public function setFirstName(string $firstName): void 
+    public function setFirstName(string $firstName): self
     {
         if (empty($firstName)) {
             throw new InvalidArgumentException('First name cannot be empty');
         }
         $this->first_name = $firstName;
+
+        return $this;
     }
 
-    public function setLastName(string $lastName): void 
+    public function setLastName(string $lastName): self
     {
         if (empty($lastName)) {
             throw new InvalidArgumentException('Last name cannot be empty');
         }
         $this->last_name = $lastName;
+
+        return $this;
     }
 
-    public function setEmail(string $email): void 
+    public function setEmail(string $email): self
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email format');
         }
         $this->email = $email;
+
+        return $this;
     }
 
-    public function setBiography(string $biography): void 
+    public function setBiography(string $biography): self
     {
         $this->biography = $biography;
+
+        return $this;
     }
 
-    public function setPassword(string $password): void 
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
-    public function setRole(string $role): void 
+    public function setRole(string $role): self
     {
         $allowedRoles = [UserRole::ADMIN->value, UserRole::MENTOR->value, UserRole::STUDENT->value];
         if (!in_array($role, $allowedRoles)) {
             throw new InvalidArgumentException('Invalid role. Must be one of: ' . implode(', ', $allowedRoles));
         }
         $this->role = $role;
+
+        return $this;
     }
 
-    public function setPrice(?float $price): void 
+    public function setPrice(?float $price): self
     {
         if ($price !== null && $price < 0) {
             throw new InvalidArgumentException('Price cannot be negative');
         }
         $this->price = $price;
+
+        return $this;
     }
 
     public function verifyPassword(string $password): bool 
