@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Enums\UserRole;
+
 class Mentor extends User
 {
     /** @var Specialization[] */
@@ -9,7 +11,7 @@ class Mentor extends User
     public function __construct(array $data = [])
     {
         parent::__construct($data);
-        $this->setRole('mentor');
+        $this->setRole(UserRole::MENTOR);
         if (isset($data['price'])) {
             $this->setPrice((float)$data['price']);
         }

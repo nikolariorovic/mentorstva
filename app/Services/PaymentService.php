@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\UserRole;
 use App\Services\PaymentGateway\PaymentGatewayInterface;
 use App\Services\Interfaces\AppointmentWriteServiceInterface;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
@@ -43,7 +44,7 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
     public function processPayment(string $gatewayName = null, array $data = []): array
     {
         $user = $this->sessionService->getSession();
-        if (!$user || !$user['id'] || $user['role'] !== 'student') {
+        if (!$user || !$user['id'] || $user['role'] !== UserRole::STUDENT) {
             throw new InvalidArgumentException('User not authenticated. Please login again.');
         }
 

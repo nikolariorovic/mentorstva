@@ -3,7 +3,7 @@
 namespace App\Validators;
 
 use App\Exceptions\InvalidUserDataException;
-
+use App\Enums\UserRole;
 class UserUpdateValidator extends BaseValidator
 {
     protected function setRules(): void
@@ -31,7 +31,7 @@ class UserUpdateValidator extends BaseValidator
             ],
             'role' => [
                 'required' => true,
-                'in' => ['admin', 'mentor', 'student'],
+                'in' => [UserRole::ADMIN, UserRole::MENTOR, UserRole::STUDENT],
                 'messages' => [
                     'required' => 'Role is required',
                     'in' => 'Invalid role. Must be one of: admin, mentor, student'

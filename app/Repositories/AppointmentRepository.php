@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Enums\UserRole;
 use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\AppointmentRepositoryInterface;
 
@@ -28,7 +29,7 @@ class AppointmentRepository extends BaseRepository implements AppointmentReposit
 
     public function getPaginatedAppointments(int $userId, string $role, int $page): array
     {
-        if ($role === 'student') {
+        if ($role === UserRole::STUDENT) {
             $sql = "SELECT a.*, 
                            u.first_name as mentor_name, 
                            u.last_name as mentor_last_name,

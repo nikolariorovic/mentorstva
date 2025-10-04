@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Enums\UserRole;
 class HomeController extends Controller {
     
     public function index() {
@@ -13,9 +14,9 @@ class HomeController extends Controller {
         $role = $_SESSION['user']['role'] ?? null;
 
         match ($role) {
-            'student' => $this->redirect('/home'),
-            'mentor' => $this->redirect('/admin/mentor'),
-            'admin' => $this->redirect('/admin/users'),
+            UserRole::STUDENT => $this->redirect('/home'),
+            UserRole::MENTOR => $this->redirect('/admin/mentor'),
+            UserRole::ADMIN => $this->redirect('/admin/users'),
             default => $this->view('login'),
         };        
     }
