@@ -4,8 +4,8 @@ namespace App\Controllers;
 use App\Exceptions\DatabaseException;
 use App\Exceptions\UserNotFoundException;
 use App\Exceptions\InvalidArgumentException;
-use App\Exceprions\InvalidPaymentDataException;
-use App\Exceprions\InvalidUserDataException;
+use App\Exceptions\InvalidPaymentDataException;
+use App\Exceptions\InvalidUserDataException;
 
 class Controller {
     
@@ -43,11 +43,11 @@ class Controller {
                 'message' => 'User not authenticated. Please login again.',
                 'log' => false,
             ],
-            $e instanceof \InvalidPaymentDataException => [
+            $e instanceof InvalidPaymentDataException => [
                 'message' => 'Validation failed',
                 'log' => false,
             ],
-            $e instanceof \InvalidUserDataException => [
+            $e instanceof InvalidUserDataException => [
                 'message' => 'Validation error. Errors: ' . implode(', ', $e->getErrors()),
                 'log' => false,
             ],

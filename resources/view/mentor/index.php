@@ -13,8 +13,21 @@
     </div>
     <div class="dashboard-content">
         <div class="dashboard-card">
+            <?php if (!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger">
+                    <?= htmlspecialchars($_SESSION['error']); ?>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['success'])): ?>
+                <div class="alert alert-success">
+                    <?= htmlspecialchars($_SESSION['success']); ?>
+                </div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
             <h2>My Appointments</h2>
-            
+
             <?php if (!empty($appointments)): ?>
                 <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                     <thead>
