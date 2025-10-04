@@ -10,24 +10,14 @@ use App\Services\Interfaces\SessionServiceInterface;
 
 class AppointmentWriteService implements AppointmentWriteServiceInterface
 {
-    private AppointmentRepositoryInterface $appointmentRepository;
-    private BookingValidator $bookingValidator;
-    private UpdateAppointmentStatusValidator $updateAppointmentStatusValidator;
-    private RatingValidator $ratingValidator;
-    private SessionServiceInterface $sessionService;
-
     public function __construct(
-        AppointmentRepositoryInterface $appointmentRepository, 
-        BookingValidator $bookingValidator, 
-        UpdateAppointmentStatusValidator $updateAppointmentStatusValidator, 
-        RatingValidator $ratingValidator, 
-        SessionServiceInterface $sessionService
+        private readonly AppointmentRepositoryInterface $appointmentRepository,
+        private readonly BookingValidator $bookingValidator,
+        private readonly UpdateAppointmentStatusValidator $updateAppointmentStatusValidator,
+        private readonly RatingValidator $ratingValidator,
+        private readonly SessionServiceInterface $sessionService
     ) {
-        $this->appointmentRepository = $appointmentRepository;
-        $this->bookingValidator = $bookingValidator;
-        $this->updateAppointmentStatusValidator = $updateAppointmentStatusValidator;
-        $this->ratingValidator = $ratingValidator;
-        $this->sessionService = $sessionService;
+
     }
 
     public function bookAppointment(array $data): void

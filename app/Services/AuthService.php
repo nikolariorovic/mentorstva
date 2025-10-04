@@ -9,11 +9,9 @@ use App\Factories\UserFactory;
 
 class AuthService implements AuthServiceInterface
 {
-    private UserReadRepositoryInterface $userReadRepository;
-    
-    public function __construct(UserReadRepositoryInterface $userReadRepository)
+    public function __construct(private readonly UserReadRepositoryInterface $userReadRepository)
     {
-        $this->userReadRepository = $userReadRepository;
+
     }
     
     public function attempt(string $email, string $password): ?User

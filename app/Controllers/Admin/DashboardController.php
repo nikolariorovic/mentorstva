@@ -5,12 +5,10 @@ use App\Controllers\Controller;
 use App\Services\Interfaces\AppointmentReadServiceInterface;
 
 class DashboardController extends Controller
-{   
-    private AppointmentReadServiceInterface $appointmentReadService;
-
-    public function __construct(AppointmentReadServiceInterface $appointmentReadService)
+{
+    public function __construct(private readonly AppointmentReadServiceInterface $appointmentReadService)
     {
-        $this->appointmentReadService = $appointmentReadService;
+
     }
     public function index()
     {

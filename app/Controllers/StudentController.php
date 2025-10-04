@@ -13,21 +13,13 @@ use App\Services\Interfaces\AppointmentWriteServiceInterface;
 
 class StudentController extends Controller 
 {
-    private SpecializationServiceInterface $specializationService;
-    private UserReadServiceInterface $userReadService;
-    private AppointmentReadServiceInterface $appointmentReadService;
-    private AppointmentWriteServiceInterface $appointmentWriteService;
-
     public function __construct(
-        SpecializationServiceInterface $specializationService, 
-        UserReadServiceInterface $userReadService, 
-        AppointmentReadServiceInterface $appointmentReadService, 
-        AppointmentWriteServiceInterface $appointmentWriteService
+        private readonly SpecializationServiceInterface $specializationService,
+        private readonly UserReadServiceInterface $userReadService,
+        private readonly AppointmentReadServiceInterface $appointmentReadService,
+        private readonly AppointmentWriteServiceInterface $appointmentWriteService
     ) {
-        $this->specializationService = $specializationService;
-        $this->userReadService = $userReadService;
-        $this->appointmentReadService = $appointmentReadService;
-        $this->appointmentWriteService = $appointmentWriteService;
+
     }
 
     public function index() {

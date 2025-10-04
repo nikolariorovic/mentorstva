@@ -4,11 +4,9 @@ namespace App\Core;
 
 final class Router
 {
-    private Container $container;
-
-    public function __construct(Container $container)
+    public function __construct(private readonly Container $container)
     {
-        $this->container = $container;
+
     }
 
     private array $routes = [];

@@ -12,15 +12,11 @@ use App\Exceptions\UserNotFoundException;
 
 class UserReadService implements UserReadServiceInterface
 {
-    private UserReadRepositoryInterface $userReadRepository;
-    private UserSpecializationRepositoryInterface $userSpecializationRepository;
-
     public function __construct(
-        UserReadRepositoryInterface $userReadRepository, 
-        UserSpecializationRepositoryInterface $userSpecializationRepository
+        private readonly UserReadRepositoryInterface $userReadRepository,
+        private readonly UserSpecializationRepositoryInterface $userSpecializationRepository
     ) {
-        $this->userReadRepository = $userReadRepository;
-        $this->userSpecializationRepository = $userSpecializationRepository;
+
     }
 
     public function getPaginatedUsers(int $page): array

@@ -9,15 +9,11 @@ use App\Exceptions\InvalidArgumentException;
 
 class MentorAdminController extends Controller
 {
-    private AppointmentReadServiceInterface $appointmentReadService;
-    private AppointmentWriteServiceInterface $appointmentWriteService;
-
     public function __construct(
-        AppointmentReadServiceInterface $appointmentReadService, 
-        AppointmentWriteServiceInterface $appointmentWriteService
+        private readonly AppointmentReadServiceInterface $appointmentReadService,
+        private readonly AppointmentWriteServiceInterface $appointmentWriteService
     ) {
-        $this->appointmentReadService = $appointmentReadService;
-        $this->appointmentWriteService = $appointmentWriteService;
+
     }
     public function index()
     {

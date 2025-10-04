@@ -10,18 +10,12 @@ use App\Services\Interfaces\SessionServiceInterface;
 
 class AppointmentReadService implements AppointmentReadServiceInterface
 {
-    private AppointmentRepositoryInterface $appointmentRepository;
-    private TimeSlotValidator $timeSlotValidator;
-    private SessionServiceInterface $sessionService;
-
     public function __construct(
-        AppointmentRepositoryInterface $appointmentRepository, 
-        TimeSlotValidator $timeSlotValidator, 
-        SessionServiceInterface $sessionService
+        private readonly AppointmentRepositoryInterface $appointmentRepository,
+        private readonly TimeSlotValidator $timeSlotValidator,
+        private readonly SessionServiceInterface $sessionService
     ) {
-        $this->appointmentRepository = $appointmentRepository;
-        $this->timeSlotValidator = $timeSlotValidator;
-        $this->sessionService = $sessionService;
+
     }
 
     public function getAvailableTimeSlots(array $data): array

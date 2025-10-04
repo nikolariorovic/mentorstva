@@ -19,21 +19,14 @@ use App\Services\Interfaces\SessionServiceInterface;
 final class PaymentService implements PaymentProcessingServiceInterface, PaymentGatewayManagementServiceInterface, PaymentHistoryServiceInterface
 {
     private array $gateways = [];
-    private AppointmentWriteServiceInterface $appointmentWriteService;
-    private PaymentRepositoryInterface $paymentRepository;
-    private PaymentValidator $paymentValidator;
-    private SessionServiceInterface $sessionService;
 
     public function __construct(
-        AppointmentWriteServiceInterface $appointmentWriteService,
-        PaymentRepositoryInterface $paymentRepository,
-        PaymentValidator $paymentValidator,
-        SessionServiceInterface $sessionService
+        private readonly AppointmentWriteServiceInterface $appointmentWriteService,
+        private readonly PaymentRepositoryInterface $paymentRepository,
+        private readonly PaymentValidator $paymentValidator,
+        private readonly SessionServiceInterface $sessionService
     ) {
-        $this->appointmentWriteService = $appointmentWriteService;
-        $this->paymentRepository = $paymentRepository;
-        $this->paymentValidator = $paymentValidator;
-        $this->sessionService = $sessionService;
+
     }
 
     public function registerGateway(PaymentGatewayInterface $gateway): void

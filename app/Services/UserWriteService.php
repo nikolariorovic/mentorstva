@@ -13,24 +13,14 @@ use App\Exceptions\UserNotFoundException;
 
 class UserWriteService implements UserWriteServiceInterface
 {
-    private UserWriteRepositoryInterface $userWriteRepository;
-    private UserReadRepositoryInterface $userReadRepository;
-    private UserSpecializationRepositoryInterface $userSpecializationRepository;
-    private ValidatorInterface $userCreateValidator;
-    private ValidatorInterface $userUpdateValidator;
-
     public function __construct(
-        UserWriteRepositoryInterface $userWriteRepository, 
-        UserReadRepositoryInterface $userReadRepository, 
-        UserSpecializationRepositoryInterface $userSpecializationRepository, 
-        ValidatorInterface $userCreateValidator, 
-        ValidatorInterface $userUpdateValidator
+        private readonly UserWriteRepositoryInterface $userWriteRepository,
+        private readonly UserReadRepositoryInterface $userReadRepository,
+        private readonly UserSpecializationRepositoryInterface $userSpecializationRepository,
+        private readonly ValidatorInterface $userCreateValidator,
+        private readonly ValidatorInterface $userUpdateValidator
     ) {
-        $this->userWriteRepository = $userWriteRepository;
-        $this->userReadRepository = $userReadRepository;
-        $this->userSpecializationRepository = $userSpecializationRepository;
-        $this->userCreateValidator = $userCreateValidator;
-        $this->userUpdateValidator = $userUpdateValidator;
+
     }
 
     public function createUser(array $data): void
