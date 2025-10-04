@@ -14,27 +14,27 @@ final class Router
     private array $currentGroupMiddleware = [];
     private string $currentGroupPrefix = '';
 
-    public function get(string $uri, $handler, $middleware = [])
+    public function get(string $uri, $handler, $middleware = []): void
     {
         $this->addRoute('GET', $uri, $handler, $middleware);
     }
 
-    public function post(string $uri, $handler, $middleware = [])
+    public function post(string $uri, $handler, $middleware = []): void
     {
         $this->addRoute('POST', $uri, $handler, $middleware);
     }
 
-    public function patch(string $uri, $handler, $middleware = [])
+    public function patch(string $uri, $handler, $middleware = []): void
     {
         $this->addRoute('PATCH', $uri, $handler, $middleware);
     }
 
-    public function delete(string $uri, $handler, $middleware = [])
+    public function delete(string $uri, $handler, $middleware = []): void
     {
         $this->addRoute('DELETE', $uri, $handler, $middleware);
     }
 
-    private function addRoute(string $method, string $uri, $handler, $middleware = [])
+    private function addRoute(string $method, string $uri, $handler, $middleware = []): void
     {
         $middleware = array_merge($this->currentGroupMiddleware, $middleware);
         $uri = $this->currentGroupPrefix . $uri;
@@ -50,7 +50,7 @@ final class Router
         ];
     }
 
-    public function group(array $options, \Closure $callback)
+    public function group(array $options, \Closure $callback): void
     {
         $parentMiddleware = $this->currentGroupMiddleware;
         $parentPrefix = $this->currentGroupPrefix;
@@ -64,7 +64,7 @@ final class Router
         $this->currentGroupPrefix = $parentPrefix;
     }
 
-    public function setNotFoundHandler($handler)
+    public function setNotFoundHandler($handler): void
     {
         $this->notFoundHandler = $handler;
     }
