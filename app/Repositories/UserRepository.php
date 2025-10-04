@@ -49,7 +49,7 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
-    private function getUserBy(string $column, $value): ?array
+    private function getUserBy(string $column, int $value): ?array
     {
         $sql = "SELECT 
                     u.*, 

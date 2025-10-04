@@ -30,7 +30,7 @@ abstract class BaseValidator implements ValidatorInterface
         }
     }
 
-    protected function validateField(string $field, $value, array $rules): void
+    protected function validateField(string $field, string $value, array $rules): void
     {
         // Required validation
         if (($rules['required'] ?? false) && empty($value)) {
