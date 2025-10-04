@@ -5,7 +5,7 @@ use App\Enums\UserRole;
 use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\AppointmentRepositoryInterface;
 
-class AppointmentRepository extends BaseRepository implements AppointmentRepositoryInterface {
+final class AppointmentRepository extends BaseRepository implements AppointmentRepositoryInterface {
     
     public function getAvailableTimeSlots(int $mentorId, string $date): array
     {

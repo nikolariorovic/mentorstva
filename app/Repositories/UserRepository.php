@@ -5,7 +5,7 @@ use App\Repositories\Interfaces\UserReadRepositoryInterface;
 use App\Repositories\Interfaces\UserWriteRepositoryInterface;
 use App\Repositories\Interfaces\UserSpecializationRepositoryInterface;
 
-class UserRepository extends BaseRepository implements UserReadRepositoryInterface, UserWriteRepositoryInterface, UserSpecializationRepositoryInterface {
+final class UserRepository extends BaseRepository implements UserReadRepositoryInterface, UserWriteRepositoryInterface, UserSpecializationRepositoryInterface {
 
     public function findByEmail(string $email): ?array{
         try {
