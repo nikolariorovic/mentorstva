@@ -50,12 +50,6 @@ $logsDir = __DIR__ . '/storage/logs';
 if (!is_dir($logsDir)) {
     mkdir($logsDir, 0755, true);
 }
-
-function logError($message) {
-    $logFile = __DIR__ . '/storage/logs/error.log';
-    $timestamp = date('Y-m-d H:i:s');
-    file_put_contents($logFile, "[$timestamp] $message\n", FILE_APPEND);
-}
 $container = new Container();
 
 registerDependencies($container);

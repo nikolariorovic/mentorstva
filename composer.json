@@ -6,9 +6,15 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\": "database/"
-        }
+        },
+        "files": [
+            "app/Helpers/LogHelpers.php"
+        ]
     },
     "require": {
         "php": ">=8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1"
     }
-} 
+}

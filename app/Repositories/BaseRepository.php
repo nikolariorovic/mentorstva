@@ -48,7 +48,10 @@ class BaseRepository {
         }
     }
 
-    protected function handleDatabaseError(PDOException $e): void {
+    /**
+     * @throws DatabaseException
+     */
+    protected function handleDatabaseError(PDOException $e): never {
         logError('Database error: ' . $e->getMessage());
         throw new DatabaseException(message: "Database error: " . $e->getMessage());
     }
