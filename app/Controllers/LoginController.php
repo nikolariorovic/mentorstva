@@ -20,7 +20,7 @@ class LoginController extends Controller
             $user = $this->authService->attempt(email: $email, password: $password);
             $this->authService->login(user: $user);
             $this->redirect(url: '/');
-        } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->redirect(url: '/');
         }

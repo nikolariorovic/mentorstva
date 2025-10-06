@@ -28,7 +28,7 @@ class StudentController extends Controller
         try {
             $specializations = $this->specializationService->getAllSpecializations();
             $this->view(view: 'student/index', data: StudentDto::fromIndex($specializations)->toArray());
-        } catch (DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'student/index');
         }
@@ -42,7 +42,7 @@ class StudentController extends Controller
                 'success' => true,
                 'mentors' => $mentors
             ]);
-        } catch (DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->json(data: [
                 'success' => false,
@@ -59,9 +59,7 @@ class StudentController extends Controller
                 'success' => true,
                 'slots' => $slots
             ]);
-        } catch (InvalidTimeSlotDataException $e) {
-            $this->json(data: json_decode((string) $e, true));
-        } catch (DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->json(data: [
                 'success' => false,
@@ -78,9 +76,7 @@ class StudentController extends Controller
                 'success' => true,
                 'message' => 'Appointment booked successfully'
             ]);
-        } catch (InvalidBookingDataException $e) {
-            $this->json(data: json_decode((string) $e, true));
-        } catch (InvalidArgumentException|DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->json(data: [
                 'success' => false,
@@ -98,7 +94,7 @@ class StudentController extends Controller
 
             $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
             $this->view(view: 'student/appointments',data: StudentDto::fromAppointments($appointments)->toArray());
-        } catch (DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'student/appointments');
         }
@@ -112,9 +108,7 @@ class StudentController extends Controller
                 'success' => true,
                 'message' => 'Rating submitted successfully'
             ]);
-        } catch (InvalidArgumentException $e) {
-            $this->json(data: json_decode((string) $e, true));
-        } catch (DatabaseException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->json(data: json_decode((string) $e, true));
         }

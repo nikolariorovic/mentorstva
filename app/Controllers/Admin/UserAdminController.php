@@ -35,7 +35,7 @@ class UserAdminController extends Controller
             $users = $this->userReadService->getPaginatedUsers(page: $page);
             $specializations = $this->specializationService->getAllSpecializations();
             $this->view(view: 'admin/index', data: UserAdminDto::fromIndex(users: $users, specializations: $specializations)->toArray());
-        } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'admin/index');
         }
@@ -47,7 +47,7 @@ class UserAdminController extends Controller
             $this->userWriteService->createUser(data: $_POST);
             $_SESSION['success'] = 'User created successfully';
             $this->redirect(url: '/admin/users');
-        } catch (DatabaseException|InvalidUserDataException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->redirect(url: '/admin/users');
         }
@@ -59,7 +59,7 @@ class UserAdminController extends Controller
             $user = $this->userReadService->getUserById(id: $id);
             $specializations = $this->specializationService->getAllSpecializations();
             $this->view(view: 'admin/show', data: UserAdminDto::fromShow(user: $user, specializations: $specializations)->toArray());
-        } catch (DatabaseException|UserNotFoundException $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             match (true) {
                 $e instanceof DatabaseException => $this->view(view: 'admin/show', data: UserAdminDto::fromShow(user: null, specializations: [])->toArray()),
@@ -75,7 +75,7 @@ class UserAdminController extends Controller
             $this->userWriteService->updateUser(id: $id, data: $_POST);
             $_SESSION['success'] = 'User updated successfully';
             $this->redirect(url: '/admin/users/' . $id);
-        } catch (DatabaseException|InvalidUserDataException|UserNotFoundException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             match (true) {
                 $e instanceof DatabaseException, $e instanceof InvalidUserDataException => $this->redirect(url: '/admin/users/' . $id),
@@ -90,7 +90,7 @@ class UserAdminController extends Controller
             $this->userWriteService->deleteUser(id: $id);
             $_SESSION['success'] = 'User deleted successfully';
             $this->redirect(url: '/admin/users');
-        } catch (DatabaseException|UserNotFoundException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->redirect(url: '/admin/users');
         }

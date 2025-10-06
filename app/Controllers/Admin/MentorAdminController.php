@@ -25,7 +25,7 @@ class MentorAdminController extends Controller
         try {
             $appointments = $this->appointmentReadService->getPaginatedAppointments(page: $page);
             $this->view(view: 'mentor/index', data: MentorDto::from(data: $appointments)->toArray());
-        } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->view(view: 'mentor/index');
         }
@@ -35,7 +35,7 @@ class MentorAdminController extends Controller
         try {
             $this->appointmentWriteService->updateAppointmentStatus(data: $_POST);
             $this->json(data: ['success' => true]);
-        } catch (DatabaseException|InvalidArgumentException|\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->handleException(e: $e);
             $this->json(data: ['success' => false]);
         }

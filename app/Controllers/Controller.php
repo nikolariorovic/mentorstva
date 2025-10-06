@@ -39,7 +39,7 @@ class Controller {
                 'message' => 'User not found.',
                 'log' => false,
             ],
-            $e instanceof \InvalidArgumentException => [
+            $e instanceof InvalidArgumentException => [
                 'message' => 'User not authenticated. Please login again.',
                 'log' => false,
             ],
