@@ -92,7 +92,7 @@ abstract class BaseValidator implements ValidatorInterface
         // Custom validation
         if (isset($rules['custom'])) {
             foreach ($rules['custom'] as $customRule) {
-                $result = $customRule($value, $data ?? []);
+                $result = $customRule($value, []);
                 if ($result !== true) {
                     $this->errors[$field] = $result;
                     return;

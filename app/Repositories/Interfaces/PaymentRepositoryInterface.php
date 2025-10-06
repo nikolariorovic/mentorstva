@@ -5,4 +5,6 @@ interface PaymentRepositoryInterface
 {
     public function savePayment(array $paymentData): int;
     public function updatePaymentStatus(int $paymentId, string $status): void;
+    public function getPayments(int $page): array;
+    public function paymentsAccepted(int $id): void;
 }
