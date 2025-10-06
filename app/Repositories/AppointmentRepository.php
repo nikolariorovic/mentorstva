@@ -2,10 +2,10 @@
 namespace App\Repositories;
 
 use App\Enums\UserRole;
-use App\Repositories\BaseRepository;
-use App\Repositories\Interfaces\AppointmentRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentReadRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentWriteRepositoryInterface;
 
-final class AppointmentRepository extends BaseRepository implements AppointmentRepositoryInterface {
+final class AppointmentRepository extends BaseRepository implements AppointmentReadRepositoryInterface, AppointmentWriteRepositoryInterface {
     
     public function getAvailableTimeSlots(int $mentorId, string $date): array
     {

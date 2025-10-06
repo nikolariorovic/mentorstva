@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\Interfaces\AppointmentRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentReadRepositoryInterface;
 use App\Validators\TimeSlotValidator;
 use App\Helpers\AppointmentHelper;
 use App\Services\Interfaces\AppointmentReadServiceInterface;
@@ -11,7 +11,7 @@ use App\Services\Interfaces\SessionServiceInterface;
 class AppointmentReadService implements AppointmentReadServiceInterface
 {
     public function __construct(
-        private readonly AppointmentRepositoryInterface $appointmentRepository,
+        private readonly AppointmentReadRepositoryInterface $appointmentRepository,
         private readonly TimeSlotValidator $timeSlotValidator,
         private readonly SessionServiceInterface $sessionService
     ) {

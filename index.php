@@ -18,7 +18,8 @@ use App\Services\Interfaces\AuthServiceInterface;
 use App\Services\AuthService;
 use App\Controllers\LoginController;
 use App\Controllers\StudentController;
-use App\Repositories\Interfaces\AppointmentRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentReadRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentWriteRepositoryInterface;
 use App\Services\Interfaces\AppointmentReadServiceInterface;
 use App\Services\Interfaces\AppointmentWriteServiceInterface;
 use App\Repositories\AppointmentRepository;
@@ -120,7 +121,11 @@ function registerDependencies(Container $container): void
         return new UserRepository();
     });
 
-    $container->bind(AppointmentRepositoryInterface::class, function(Container $c) {
+    $container->bind(AppointmentReadRepositoryInterface::class, function(Container $c) {
+        return new AppointmentRepository();
+    });
+
+    $container->bind(AppointmentWriteRepositoryInterface::class, function(Container $c) {
         return new AppointmentRepository();
     });
 
@@ -153,7 +158,7 @@ function registerDependencies(Container $container): void
 
     $container->bind(AppointmentReadService::class, function(Container $c) {
         return new AppointmentReadService(
-            $c->resolve(AppointmentRepositoryInterface::class),
+            $c->resolve(AppointmentReadRepositoryInterface::class),
             $c->resolve(TimeSlotValidator::class),
             $c->resolve(SessionServiceInterface::class)
         );
@@ -161,7 +166,7 @@ function registerDependencies(Container $container): void
 
     $container->bind(AppointmentWriteService::class, function(Container $c) {
         return new AppointmentWriteService(
-            $c->resolve(AppointmentRepositoryInterface::class),
+            $c->resolve(AppointmentWriteRepositoryInterface::class),
             $c->resolve(BookingValidator::class),
             $c->resolve(UpdateAppointmentStatusValidator::class),
             $c->resolve(RatingValidator::class),

@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\Interfaces\AppointmentRepositoryInterface;
+use App\Repositories\Interfaces\AppointmentWriteRepositoryInterface;
 use App\Validators\BookingValidator;
 use App\Validators\UpdateAppointmentStatusValidator;
 use App\Validators\RatingValidator;
@@ -11,7 +11,7 @@ use App\Services\Interfaces\SessionServiceInterface;
 class AppointmentWriteService implements AppointmentWriteServiceInterface
 {
     public function __construct(
-        private readonly AppointmentRepositoryInterface $appointmentRepository,
+        private readonly AppointmentWriteRepositoryInterface $appointmentRepository,
         private readonly BookingValidator $bookingValidator,
         private readonly UpdateAppointmentStatusValidator $updateAppointmentStatusValidator,
         private readonly RatingValidator $ratingValidator,
