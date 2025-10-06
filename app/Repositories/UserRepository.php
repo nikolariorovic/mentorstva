@@ -15,7 +15,7 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
-    public function getUserById(int $id): ?array
+    public function getUserById(int $id): array
     {
         return $this->getUserBy(column: 'id', value: $id);
     }
@@ -49,7 +49,7 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
-    private function getUserBy(string $column, int $value): ?array
+    private function getUserBy(string $column, int $value): array
     {
         $sql = "SELECT 
                     u.*, 

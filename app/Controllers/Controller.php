@@ -51,10 +51,6 @@ class Controller {
                 'message' => 'Validation error. Errors: ' . implode(', ', $e->getErrors()),
                 'log' => false,
             ],
-            $e instanceof \Exception, $e instanceof \Error => [
-                'message' => 'Error. Something went wrong.',
-                'log' => true,
-            ],
             default => [
                 'message' => $defaultMessage,
                 'log' => true,

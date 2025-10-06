@@ -30,7 +30,7 @@ class Mentor extends User
      */
     public function setSpecializations(array $specializations): void
     {
-        $this->specializations = array_filter($specializations, fn($s) => $s instanceof Specialization);
+        $this->specializations = $specializations;
     }
 
     public function addSpecialization(Specialization $specialization): void

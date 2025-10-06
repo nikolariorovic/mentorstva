@@ -77,7 +77,7 @@ class UserWriteService implements UserWriteServiceInterface
         }
         
         $newPrice = ($data['price'] !== '' && $data['price'] !== null) ? (float)$data['price'] : 0.00;
-        if (array_key_exists('price', $data) && $user->getPrice() !== $newPrice) {
+        if ($user->getPrice() !== $newPrice) {
             $user->setPrice(price: $newPrice);
             $isModified = true;
         }
