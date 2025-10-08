@@ -5,7 +5,3 @@ parameters:
     level: 6
     paths:
         - app
-    ignoreErrors:
-        - message: '#return type has no value type specified in iterable type array#'
-          paths:
-            - app/Dto/Interfaces/*

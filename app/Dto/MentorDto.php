@@ -14,7 +14,7 @@ readonly class MentorDto implements DtoInterface
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param list<array<string, mixed>> $data
      */
     public static function from(array $data): self
     {

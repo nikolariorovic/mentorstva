@@ -11,6 +11,10 @@ use App\Exceptions\InvalidArgumentException;
 
 class UserFactory implements UserFactoryInterface
 {
+    /**
+     * @param array<string, mixed> $data
+     * @return User
+     */
     public static function create(array $data): User
     {
         return match($data['role']) {

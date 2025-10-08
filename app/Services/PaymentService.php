@@ -18,6 +18,9 @@ use App\Services\Interfaces\SessionServiceInterface;
 
 final class PaymentService implements PaymentProcessingServiceInterface, PaymentGatewayManagementServiceInterface, PaymentHistoryServiceInterface
 {
+    /**
+     * @var array<string, mixed> $gateways
+     */
     private array $gateways = [];
 
     public function __construct(
@@ -85,11 +88,18 @@ final class PaymentService implements PaymentProcessingServiceInterface, Payment
         return isset($this->gateways[$gatewayName]);
     }
 
+    /**
+     * @return list<string>
+     */
     public function getAvailableGateways(): array
     {
         return array_keys($this->gateways);
     }
 
+    /**
+     * @param int $page
+     * @return list<array<string, mixed>>
+     */
     public function getPayments(int $page): array
     {
         return $this->paymentRepository->getPayments(page: $page);

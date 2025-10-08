@@ -1,12 +1,16 @@
 <?php
 namespace App\Repositories;
 
+use App\Exceptions\DatabaseException;
 use App\Repositories\Interfaces\UserReadRepositoryInterface;
 use App\Repositories\Interfaces\UserWriteRepositoryInterface;
 use App\Repositories\Interfaces\UserSpecializationRepositoryInterface;
 
 final class UserRepository extends BaseRepository implements UserReadRepositoryInterface, UserWriteRepositoryInterface, UserSpecializationRepositoryInterface {
 
+    /**
+     * @return list<array<string, mixed>>|null
+     */
     public function findByEmail(string $email): ?array{
         try {
             return $this->queryOne(sql: 'SELECT * FROM users WHERE email = ? and deleted_at is null', params: [$email]);
@@ -15,11 +19,17 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function getUserById(int $id): array
     {
         return $this->getUserBy(column: 'id', value: $id);
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function getUserByIdOnly(int $id): ?array
     {
         try {
@@ -29,6 +39,10 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
+    /**
+     * @param int $id
+     * @return array<string, mixed>
+     */
     public function getUserSpecializations(int $id): array
     {
         try {
@@ -49,6 +63,11 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
+    /**
+     * @param string $column
+     * @param int $value
+     * @return list<array<string, mixed>>
+     */
     private function getUserBy(string $column, int $value): array
     {
         $sql = "SELECT 
@@ -70,6 +89,10 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
         }
     }
 
+    /**
+     * @param int $page
+     * @return list<array<string, mixed>>
+     */
     public function getAllUsers(int $page): array {
         try {
             return $this->query(sql: 'SELECT * FROM users WHERE deleted_at is null LIMIT 10 OFFSET ?', params: [($page - 1) * 10]);

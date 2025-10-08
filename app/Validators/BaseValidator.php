@@ -6,7 +6,13 @@ use App\Validators\Interfaces\ValidatorInterface;
 
 abstract class BaseValidator implements ValidatorInterface
 {
+    /**
+     * @var array<string, mixed> $errors
+     */
     protected array $errors = [];
+    /**
+     * @var array<string, mixed> $rules
+     */
     protected array $rules = [];
 
     public function __construct()
@@ -16,6 +22,10 @@ abstract class BaseValidator implements ValidatorInterface
 
     abstract protected function setRules(): void;
 
+    /**
+     * @param array<string, mixed> $data
+     * @return void
+     */
     public function validate(array $data): void
     {
         $this->errors = [];
@@ -30,6 +40,12 @@ abstract class BaseValidator implements ValidatorInterface
         }
     }
 
+    /**
+     * @param string $field
+     * @param string $value
+     * @param array<string, mixed> $rules
+     * @return void
+     */
     protected function validateField(string $field, string $value, array $rules): void
     {
         // Required validation

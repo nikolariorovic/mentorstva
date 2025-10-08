@@ -40,7 +40,11 @@ final class PaymentRepository extends BaseRepository implements PaymentRepositor
         $sql = "UPDATE payments SET status = ? WHERE id = ?";
         $this->execute(sql: $sql, params: [$status, $paymentId]);
     }
-    
+
+    /**
+     * @param int $page
+     * @return list<array<string, mixed>>
+     */
     public function getPayments(int $page): array
     {
         $sql = "SELECT 

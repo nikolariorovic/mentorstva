@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Exceptions\InvalidArgumentException;
 use App\Repositories\Interfaces\UserReadRepositoryInterface;
 use App\Repositories\Interfaces\UserSpecializationRepositoryInterface;
 use App\Factories\UserFactory;
@@ -19,6 +20,11 @@ class UserReadService implements UserReadServiceInterface
 
     }
 
+    /**
+     * @param int $page
+     * @return list<User> $data
+     * @throws InvalidArgumentException
+     */
     public function getPaginatedUsers(int $page): array
     {
         $users = $this->userReadRepository->getAllUsers(page: $page);
@@ -41,6 +47,9 @@ class UserReadService implements UserReadServiceInterface
         return $user;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getMentorsBySpecialization(int $specializationId): array
     {
         return $this->userReadRepository->getMentorsBySpecialization(specializationId: $specializationId);

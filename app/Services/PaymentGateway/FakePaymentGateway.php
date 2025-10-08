@@ -6,6 +6,10 @@ namespace App\Services\PaymentGateway;
 
 final class FakePaymentGateway implements PaymentGatewayInterface
 {
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     public function charge(array $data): array
     {
         usleep(500000);

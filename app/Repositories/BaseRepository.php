@@ -13,6 +13,11 @@ class BaseRepository {
         $this->db = (new Database())->getConnection();
     }
 
+    /**
+     * @param string $sql
+     * @param list<int|string|float|null> $params
+     * @return list<array<string, mixed>>|array<string, mixed>
+     */
     protected function query(string $sql, array $params = []): array {
         try {
             $stmt = $this->db->prepare($sql);
@@ -26,6 +31,11 @@ class BaseRepository {
         }  
     }
 
+    /**
+     * @param string $sql
+     * @param array<int|string, int|string|float|bool|null> $params
+     * @return bool
+     */
     protected function execute(string $sql, array $params = []): bool {
         try {
             $stmt = $this->db->prepare($sql);
@@ -38,6 +48,11 @@ class BaseRepository {
         }
     }
 
+    /**
+     * @param string $sql
+     * @param list<int|string|float|null> $params
+     * @return list<array<string, mixed>>|array<string, mixed>|null
+     */
     protected function queryOne(string $sql, array $params = []): ?array {
         try {
             $stmt = $this->db->prepare($sql);

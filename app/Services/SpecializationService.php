@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\SpecializationRepositoryInterface;
 use App\Factories\SpecializationFactory;
 use App\Services\Interfaces\SpecializationServiceInterface;
+use App\Models\Specialization;
 
 class SpecializationService implements SpecializationServiceInterface
 {
@@ -13,6 +14,9 @@ class SpecializationService implements SpecializationServiceInterface
 
     }
 
+    /**
+     * @return list<Specialization>
+     */
     public function getAllSpecializations(): array
     {
         $specializations = $this->specializationRepository->getAll();

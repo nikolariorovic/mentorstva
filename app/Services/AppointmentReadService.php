@@ -18,6 +18,10 @@ class AppointmentReadService implements AppointmentReadServiceInterface
 
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return list<array<string, string>>
+     */
     public function getAvailableTimeSlots(array $data): array
     {
         $this->timeSlotValidator->validate(data: $data);
@@ -43,6 +47,10 @@ class AppointmentReadService implements AppointmentReadServiceInterface
         return array_values($availableSlots);
     }
 
+    /**
+     * @param int $page
+     * @return list<array<string, mixed>>
+     */
     public function getPaginatedAppointments(int $page): array
     {
         $user = $this->sessionService->getSession();
@@ -53,6 +61,9 @@ class AppointmentReadService implements AppointmentReadServiceInterface
         return $this->appointmentRepository->getPaginatedAppointments(userId: $user['id'], role: $user['role'], page: $page);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAppointmentsForDashboard(): array
     {
         $getAppointmentsForDashboard = $this->appointmentRepository->getAppointmentsForDashboard();

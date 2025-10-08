@@ -2,6 +2,7 @@
 namespace App\Dto;
 
 use App\Dto\Interfaces\DtoInterface;
+use App\Models\Specialization;
 use App\Models\User;
 
 readonly class UserAdminDto implements DtoInterface
@@ -15,7 +16,7 @@ readonly class UserAdminDto implements DtoInterface
     }
 
     /**
-     * @param array<string, mixed> $specializations
+     * @param list<Specialization> $specializations
      */
     public static function fromShow(?User $user, array $specializations): self
     {
@@ -26,8 +27,8 @@ readonly class UserAdminDto implements DtoInterface
     }
 
     /**
-     * @param array<string, mixed> $specializations
-     * @param array<string, mixed> $users
+     * @param list<Specialization> $specializations
+     * @param list<User> $users
      */
     public static function fromIndex(array $users, array $specializations): self
     {

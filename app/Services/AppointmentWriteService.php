@@ -20,6 +20,10 @@ class AppointmentWriteService implements AppointmentWriteServiceInterface
 
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return void
+     */
     public function bookAppointment(array $data): void
     {
         $user = $this->sessionService->getSession();
@@ -34,6 +38,10 @@ class AppointmentWriteService implements AppointmentWriteServiceInterface
         $this->appointmentRepository->bookAppointment(mentorId: $data['mentor_id'], dateTime: $dateTime, studentId: $user['id'], price: $data['price'], specializationId: $data['specialization_id']);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return void
+     */
     public function updateAppointmentStatus(array $data): void
     {
         $this->updateAppointmentStatusValidator->validate(data: $data);
@@ -45,6 +53,10 @@ class AppointmentWriteService implements AppointmentWriteServiceInterface
         $this->appointmentRepository->updatePaymentStatus(appointmentId: $appointmentId, paymentStatus: $paymentStatus, isPaid: $isPaid);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return void
+     */
     public function submitRating(array $data): void
     {
         $this->ratingValidator->validate(data: $data);

@@ -5,6 +5,9 @@ use App\Repositories\Interfaces\SpecializationRepositoryInterface;
 
 final class SpecializationRepository extends BaseRepository implements SpecializationRepositoryInterface
 {
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function getAll(): array
     {
         try {

@@ -2,6 +2,7 @@
 namespace App\Dto;
 
 use App\Dto\Interfaces\DtoInterface;
+use App\Models\Specialization;
 
 readonly class StudentDto implements DtoInterface
 {
@@ -14,7 +15,7 @@ readonly class StudentDto implements DtoInterface
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param list<Specialization> $data
      */
     public static function fromIndex(array $data): self
     {
@@ -24,7 +25,7 @@ readonly class StudentDto implements DtoInterface
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param list<array<string, mixed>> $data
      */
     public static function fromAppointments(array $data): self
     {
