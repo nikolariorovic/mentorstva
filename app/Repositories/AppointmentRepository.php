@@ -2,11 +2,16 @@
 namespace App\Repositories;
 
 use App\Enums\UserRole;
+use App\Exceptions\DatabaseException;
 use App\Repositories\Interfaces\AppointmentReadRepositoryInterface;
 use App\Repositories\Interfaces\AppointmentWriteRepositoryInterface;
 
 final class AppointmentRepository extends BaseRepository implements AppointmentReadRepositoryInterface, AppointmentWriteRepositoryInterface {
-    
+
+    /**
+     * @return list<array{period: string}>
+     * @throws DatabaseException
+     */
     public function getAvailableTimeSlots(int $mentorId, string $date): array
     {
         try {
@@ -27,6 +32,9 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
         $this->execute(sql: $sql, params: [$mentorId, $dateTime, $studentId, $price, $specializationId]);
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function getPaginatedAppointments(int $userId, string $role, int $page): array
     {
         if ($role === UserRole::STUDENT->value) {
@@ -73,6 +81,9 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
         $this->execute(sql: $sql, params: [$rating, $comment, $appointmentId]);
     }
 
+    /**
+     * @return list<array{yearMonth: string, session_count: int}>
+     */
     public function getAppointmentsForDashboard(): array
     {
         $sql = "
@@ -93,12 +104,18 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
         return $this->query(sql: $sql);
     }
 
+    /**
+     * @return list<array{total_profit: float|string|null}>
+     */
     public function getSumOfProfit(): array
     {
         $sql = "SELECT SUM(price) AS total_profit FROM appointments WHERE status = 'finished'";
         return $this->query(sql: $sql);
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function getMostActiveAndMostRatedMentors(): array
     {
         $sql = "

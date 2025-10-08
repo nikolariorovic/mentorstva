@@ -20,6 +20,7 @@ abstract class User
     protected ?DateTime $deleted_at = null;
 
     /**
+     * @param array<string, mixed> $data
      * @throws \DateMalformedStringException
      * @throws InvalidArgumentException
      */
@@ -177,6 +178,9 @@ abstract class User
         return $password === $this->password;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array 
     {
         return [

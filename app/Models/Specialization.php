@@ -45,6 +45,9 @@ class Specialization
         return $this->updated_at;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

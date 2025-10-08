@@ -5,6 +5,10 @@ use App\Models\Specialization;
 
 class UserHelper
 {
+    /**
+     * @param array<string, mixed> $userSqlData
+     * @return array<string, mixed>
+     */
     public static function setSpecializations(array $userSqlData): array
     {
         $specializations = [];

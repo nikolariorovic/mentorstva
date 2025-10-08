@@ -17,8 +17,9 @@ class Payment
     protected DateTime $created_at;
 
     /**
-     * @throws \DateMalformedStringException
+     * @param array<string, mixed> $data
      * @throws InvalidArgumentException
+     * @throws \DateMalformedStringException
      */
     public function __construct(array $data = [])
     {
@@ -147,6 +148,9 @@ class Payment
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

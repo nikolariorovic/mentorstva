@@ -3,6 +3,10 @@ namespace App\Helpers;
 
 class AppointmentHelper 
 {
+    /**
+     * @param string $date
+     * @return list<array<string, string>>
+    */
     public static function getAllTimeSlotsForDate(string $date): array
     {
         $allSlots = [];

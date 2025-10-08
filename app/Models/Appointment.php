@@ -85,6 +85,9 @@ class Appointment
         return $this->created_at;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

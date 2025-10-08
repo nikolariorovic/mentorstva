@@ -8,6 +8,9 @@ class Mentor extends User
     /** @var Specialization[] */
     private array $specializations = [];
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(array $data = [])
     {
         parent::__construct(data: $data);
@@ -38,6 +41,9 @@ class Mentor extends User
         $this->specializations[$specialization->getId()] = $specialization;
     }
 
+    /**
+     * @return  array<string, mixed>
+     */
     public function toArray(): array
     {
         $specializationsArray = array_map(fn(Specialization $s) => $s->toArray(), $this->specializations);

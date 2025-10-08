@@ -4,13 +4,22 @@ namespace App\Exceptions;
 
 abstract class BaseException extends \Exception
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $errors = [];
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array
     {
         return $this->errors;
     }
 
+    /**
+     * @param array<string, mixed> $errors
+     */
     public function setErrors(array $errors): self
     {
         $this->errors = $errors;
