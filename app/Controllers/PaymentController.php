@@ -43,7 +43,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function getPayments()
+    public function getPayments(): void
     {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0
         ? (int) $_GET['page']
@@ -58,7 +58,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function paymentsAccepted($id): void
+    public function paymentsAccepted(int $id): void
     {
         try {
             $this->paymentService->paymentsAccepted(id: $id);

@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use Closure;
+
 final class Router
 {
     public function __construct(private readonly Container $container)
@@ -9,32 +11,61 @@ final class Router
 
     }
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $routes = [];
+    /**
+     * @var callable|null
+     */
     private $notFoundHandler;
+    /**
+     * @var array<int, callable>
+     */
     private array $currentGroupMiddleware = [];
     private string $currentGroupPrefix = '';
 
-    public function get(string $uri, $handler, $middleware = []): void
+    /**
+     * @param callable|string|array<string|object, string> $handler
+     * @param array<int, callable|string> $middleware
+     */
+    public function get(string $uri, array|callable|string $handler, array $middleware = []): void
     {
         $this->addRoute('GET', $uri, $handler, $middleware);
     }
 
-    public function post(string $uri, $handler, $middleware = []): void
+    /**
+     * @param callable|string|array<string|object, string> $handler
+     * @param array<int, callable|string> $middleware
+     */
+    public function post(string $uri, array|callable|string $handler, array $middleware = []): void
     {
         $this->addRoute('POST', $uri, $handler, $middleware);
     }
 
-    public function patch(string $uri, $handler, $middleware = []): void
+    /**
+     * @param callable|string|array<string|object, string> $handler
+     * @param array<int, callable|string> $middleware
+     */
+    public function patch(string $uri, array|callable|string $handler, array $middleware = []): void
     {
         $this->addRoute('PATCH', $uri, $handler, $middleware);
     }
 
-    public function delete(string $uri, $handler, $middleware = []): void
+    /**
+     * @param callable|string|array<string|object, string> $handler
+     * @param array<int, callable|string> $middleware
+     */
+    public function delete(string $uri, array|callable|string $handler, array $middleware = []): void
     {
         $this->addRoute('DELETE', $uri, $handler, $middleware);
     }
 
-    private function addRoute(string $method, string $uri, $handler, $middleware = []): void
+    /**
+     * @param callable|string|array<string|object, string> $handler
+     * @param array<int, callable|string> $middleware
+     */
+    private function addRoute(string $method, string $uri, array|callable|string $handler, array $middleware = []): void
     {
         $middleware = array_merge($this->currentGroupMiddleware, $middleware);
         $uri = $this->currentGroupPrefix . $uri;
@@ -50,7 +81,11 @@ final class Router
         ];
     }
 
-    public function group(array $options, \Closure $callback): void
+    /**
+     * @param array{middleware?: array<int, callable|string>, prefix?: string} $options
+     * @param Closure $callback
+     */
+    public function group(array $options, Closure $callback): void
     {
         $parentMiddleware = $this->currentGroupMiddleware;
         $parentPrefix = $this->currentGroupPrefix;
@@ -64,12 +99,15 @@ final class Router
         $this->currentGroupPrefix = $parentPrefix;
     }
 
-    public function setNotFoundHandler($handler): void
+    /**
+     * @param callable $handler
+     */
+    public function setNotFoundHandler(callable $handler): void
     {
         $this->notFoundHandler = $handler;
     }
 
-    public function dispatch()
+    public function dispatch(): mixed
     {
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         if ($requestUri !== '/' && substr($requestUri, -1) === '/') {
@@ -96,7 +134,7 @@ final class Router
                 foreach ($route['middleware'] as $middleware) {
                     $result = (new $middleware())->handle();
                     if ($result === false) {
-                        return;
+                        return null;
                     }
                 }
 
@@ -116,5 +154,6 @@ final class Router
             http_response_code(404);
             echo "404 Not Found";
         }
+        return null;
     }
 } 

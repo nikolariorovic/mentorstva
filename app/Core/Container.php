@@ -6,15 +6,21 @@ namespace App\Core;
 
 final class Container
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $bindings = [];
+    /**
+     * @var array<string, object>
+     */
     private array $instances = [];
 
-    public function bind(string $abstract, $concrete): void
+    public function bind(string $abstract, mixed $concrete): void
     {
         $this->bindings[$abstract] = $concrete;
     }
 
-    public function resolve(string $abstract)
+    public function resolve(string $abstract): object
     {
         // Ako već postoji instanca, vrati je
         if (isset($this->instances[$abstract])) {

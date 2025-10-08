@@ -8,7 +8,10 @@ use App\Exceptions\InvalidPaymentDataException;
 use App\Exceptions\InvalidUserDataException;
 
 class Controller {
-    
+
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function view(string $view, array $data = []): void
     {
         extract($data);
@@ -21,6 +24,9 @@ class Controller {
         exit;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function json(array $data): void
     {
         header('Content-Type: application/json');
