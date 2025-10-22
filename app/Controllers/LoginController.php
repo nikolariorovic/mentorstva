@@ -18,6 +18,9 @@ class LoginController extends Controller
         $password = $_POST['password'];
         try {
             $user = $this->authService->attempt(email: $email, password: $password);
+            if ($user === null) {
+                throw new UserNotFoundException();
+            }
             $this->authService->login(user: $user);
             $this->redirect(url: '/');
         } catch (\Throwable $e) {

@@ -90,21 +90,30 @@ class PaymentValidator extends BaseValidator
         ];
     }
 
-    private function isValidCardNumber(string $cardNumber): bool
+    private function isValidCardNumber(?string $cardNumber): bool
     {
-        $cardNumber = preg_replace('/\s+/', '', $cardNumber);
-        
-        if (!preg_match('/^[0-9]+$/', $cardNumber)) {
+        if ($cardNumber === null) {
             return false;
         }
-        
+
+        $cleaned = preg_replace('/\s+/', '', $cardNumber);
+
+        // Može se desiti da preg_replace vrati null ako dođe do greške
+        if (!is_string($cleaned)) {
+            return false;
+        }
+
+        if (!preg_match('/^[0-9]+$/', $cleaned)) {
+            return false;
+        }
+
         $sum = 0;
-        $length = strlen($cardNumber);
+        $length = strlen($cleaned);
         $parity = $length % 2;
-        
+
         for ($i = 0; $i < $length; $i++) {
-            $digit = (int)$cardNumber[$i];
-            if ($i % 2 == $parity) {
+            $digit = (int)$cleaned[$i];
+            if ($i % 2 === $parity) {
                 $digit *= 2;
                 if ($digit > 9) {
                     $digit -= 9;
@@ -112,39 +121,44 @@ class PaymentValidator extends BaseValidator
             }
             $sum += $digit;
         }
-        
-        return $sum % 10 == 0;
+
+        return $sum % 10 === 0;
     }
 
-    private function isValidExpiryDate(string $expiryDate): bool
+    private function isValidExpiryDate(?string $expiryDate): bool
     {
+        if ($expiryDate === null) {
+            return false;
+        }
+
         if (!preg_match('/^\d{2}\/\d{2}$/', $expiryDate)) {
             return false;
         }
-        
-        list($month, $year) = explode('/', $expiryDate);
+
+        [$month, $year] = explode('/', $expiryDate);
+
         $month = (int)$month;
         $year = (int)$year;
-        
+
         if ($year < 100) {
             $year += 2000;
         }
-        
+
         if ($month < 1 || $month > 12) {
             return false;
         }
-        
+
         $currentYear = (int)date('Y');
         $currentMonth = (int)date('m');
-        
-        if ($year < $currentYear || ($year == $currentYear && $month < $currentMonth)) {
+
+        if ($year < $currentYear || ($year === $currentYear && $month < $currentMonth)) {
             return false;
         }
-        
+
         if ($year > $currentYear + 10) {
             return false;
         }
-        
+
         return true;
     }
 

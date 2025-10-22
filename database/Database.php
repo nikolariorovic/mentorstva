@@ -24,9 +24,7 @@ class Database {
         $this->password = $env['DB_PASS'] ?? '';
     }
 
-    public function getConnection(): ?PDO {
-        $this->conn = null;
-
+    public function getConnection(): PDO {
         try {
             $this->conn = new PDO(
                 "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name,
@@ -35,10 +33,12 @@ class Database {
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("set names utf8");
+            return $this->conn;
         } catch(PDOException $e) {
             logError('Database error: ' . $e->getMessage());
+            throw new \RuntimeException("Could not connect to the database.");
         }
 
-        return $this->conn;
+
     }
 } 

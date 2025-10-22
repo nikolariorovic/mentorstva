@@ -7,7 +7,7 @@ use App\Enums\UserRole;
 
 abstract class User
 {
-    protected ?int $id = null;
+    protected int $id;
     protected string $first_name = '';
     protected string $last_name = '';
     protected string $email = '';
@@ -48,7 +48,7 @@ abstract class User
         }
     }
     
-    public function getId(): int 
+    public function getId(): int
     {
         return $this->id;
     }
