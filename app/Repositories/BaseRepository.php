@@ -16,8 +16,8 @@ class BaseRepository {
     /**
      * @param string $sql
      * @param list<int|string|float|null> $params
-     * @return list<array<string, mixed>>|array<string, mixed>
-     */
+     * @return list<array<string, mixed>>
+    */
     protected function query(string $sql, array $params = []): array {
         try {
             $stmt = $this->db->prepare($sql);
@@ -25,10 +25,14 @@ class BaseRepository {
                 $stmt->bindValue($index + 1, $value, is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
             }
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            assert(array_is_list($results));
+
+            return $results;
         } catch (PDOException $e) {
             $this->handleDatabaseError(e: $e);
-        }  
+        }
     }
 
     /**
@@ -39,7 +43,7 @@ class BaseRepository {
     protected function execute(string $sql, array $params = []): bool {
         try {
             $stmt = $this->db->prepare($sql);
-            foreach ($params as $index => $value) {
+            foreach (array_values($params) as $index => $value) {
                 $stmt->bindValue($index + 1, $value, is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
             }
             return $stmt->execute();
@@ -51,7 +55,7 @@ class BaseRepository {
     /**
      * @param string $sql
      * @param list<int|string|float|null> $params
-     * @return list<array<string, mixed>>|array<string, mixed>|null
+     * @return array<string, mixed>|null
      */
     protected function queryOne(string $sql, array $params = []): ?array {
         try {

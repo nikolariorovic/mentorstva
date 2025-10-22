@@ -25,7 +25,7 @@ interface UserReadRepositoryInterface
     public function getUserByIdOnly(int $id): ?array;
     /**
      * @param int $specializationId
-     * @return array<string, mixed>
+     * @return list<array<string, mixed>>
      */
     public function getMentorsBySpecialization(int $specializationId): array;
 }

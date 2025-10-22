@@ -2,7 +2,9 @@
 namespace App\Middleware;
 
 use App\Enums\UserRole;
-class StudentMiddleware
+use App\Middleware\Interfaces\MiddlewareInterface;
+
+class StudentMiddleware implements MiddlewareInterface
 {
     public function handle(): bool
     {

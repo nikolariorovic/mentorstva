@@ -39,6 +39,13 @@ abstract class BaseException extends \Exception
             'errors' => $this->getErrors()
         ];
 
-        return json_encode($response);
+        $json = json_encode($response);
+
+        if ($json === false) {
+            $error = json_last_error_msg();
+            return '{"success":false,"message":"JSON encode failed: ' . addslashes($error) . '"}';
+        }
+
+        return $json;
     }
 } 

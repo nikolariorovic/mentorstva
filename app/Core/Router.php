@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Middleware\Interfaces\MiddlewareInterface;
 use Closure;
 
 final class Router
@@ -12,7 +13,7 @@ final class Router
     }
 
     /**
-     * @var array<string, mixed>
+     * @var array<int|string, mixed>
      */
     private array $routes = [];
     /**
@@ -20,7 +21,7 @@ final class Router
      */
     private $notFoundHandler;
     /**
-     * @var array<int, callable>
+     * @var array<int, callable|string>
      */
     private array $currentGroupMiddleware = [];
     private string $currentGroupPrefix = '';
@@ -110,7 +111,10 @@ final class Router
     public function dispatch(): mixed
     {
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if ($requestUri !== '/' && substr($requestUri, -1) === '/') {
+        if (!is_string($requestUri)) {
+            $requestUri = '/';
+        }
+        if ($requestUri !== '/' && str_ends_with($requestUri, '/')) {
             $requestUri = rtrim($requestUri, '/');
         }
 
@@ -132,7 +136,9 @@ final class Router
                 array_shift($matches);
 
                 foreach ($route['middleware'] as $middleware) {
-                    $result = (new $middleware())->handle();
+                    /** @var MiddlewareInterface $middlewareInstance */
+                    $middlewareInstance = new $middleware();
+                    $result = $middlewareInstance->handle();
                     if ($result === false) {
                         return null;
                     }
@@ -141,9 +147,16 @@ final class Router
                 if (is_array($route['handler'])) {
                     [$class, $method] = $route['handler'];
                     $controller = $this->container->resolve($class);
-                    return call_user_func_array([$controller, $method], $matches);
+
+                    if (!method_exists($controller, $method)) {
+                        throw new \RuntimeException("Method '$method' does not exist on controller " . get_class($controller));
+                    }
+
+                    return $controller->$method(...$matches);
                 } else {
-                    return call_user_func_array($route['handler'], $matches);
+                    /** @var callable $handler */
+                    $handler = $route['handler'];
+                    return $handler(...$matches);
                 }
             }
         }

@@ -13,7 +13,7 @@ interface UserReadServiceInterface
     public function getUserById(int $id): ?User;
     /**
      * @param int $specializationId
-     * @return array<string, mixed>
+     * @return list<array<string, mixed>>
      */
     public function getMentorsBySpecialization(int $specializationId): array;
 }

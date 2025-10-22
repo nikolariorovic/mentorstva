@@ -2,7 +2,9 @@
 namespace App\Middleware;
 
 use App\Enums\UserRole;
-class MentorMiddleware
+use App\Middleware\Interfaces\MiddlewareInterface;
+
+class MentorMiddleware implements MiddlewareInterface
 {
     public function handle(): bool
     {

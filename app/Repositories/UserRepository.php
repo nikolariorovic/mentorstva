@@ -9,7 +9,7 @@ use App\Repositories\Interfaces\UserSpecializationRepositoryInterface;
 final class UserRepository extends BaseRepository implements UserReadRepositoryInterface, UserWriteRepositoryInterface, UserSpecializationRepositoryInterface {
 
     /**
-     * @return list<array<string, mixed>>|null
+     * @return array<string, mixed>|null
      */
     public function findByEmail(string $email): ?array{
         try {
@@ -41,7 +41,7 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
 
     /**
      * @param int $id
-     * @return array<string, mixed>
+     * @return list<array<string, mixed>>
      */
     public function getUserSpecializations(int $id): array
     {
@@ -152,7 +152,9 @@ final class UserRepository extends BaseRepository implements UserReadRepositoryI
             $this->handleDatabaseError(e: $e);
         }
     }
-
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function getMentorsBySpecialization(int $specializationId): array
     {
         try {

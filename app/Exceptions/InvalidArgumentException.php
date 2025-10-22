@@ -17,6 +17,13 @@ class InvalidArgumentException extends BaseException
             'logout' => true
         ];
 
-        return json_encode($response);
+        $json = json_encode($response);
+
+        if ($json === false) {
+            $error = json_last_error_msg();
+            return '{"success":false,"message":"JSON encode failed: ' . addslashes($error) . '"}';
+        }
+
+        return $json;
     }
 }

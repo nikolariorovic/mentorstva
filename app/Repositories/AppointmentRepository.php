@@ -19,8 +19,17 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
                     WHERE mentor_id = ? 
                     AND DATE(period) = ? 
                     AND status != 'rejected'";
-                  
-            return $this->query(sql: $sql, params: [$mentorId, $date]);
+
+            $results = $this->query(sql: $sql, params: [$mentorId, $date]);
+
+            return array_map(
+            /**
+             * @param array<string, mixed> $row
+             * @return array{period: string}
+             */
+                fn(array $row) => ['period' => (string) $row['period']],
+                $results
+            );
         } catch (\PDOException $e) {
             $this->handleDatabaseError(e: $e);
         }
@@ -101,7 +110,20 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
             ORDER BY
                 DATE_FORMAT(period, '%Y-%m') ASC
         ";
-        return $this->query(sql: $sql);
+
+        $results = $this->query(sql: $sql);
+
+        return array_map(
+        /**
+         * @param array<string, mixed> $row
+         * @return array{yearMonth: string, session_count: int}
+         */
+            fn(array $row) => [
+                'yearMonth' => (string) $row['yearMonth'],
+                'session_count' => (int) $row['session_count'],
+            ],
+            $results
+        );
     }
 
     /**
@@ -110,7 +132,18 @@ final class AppointmentRepository extends BaseRepository implements AppointmentR
     public function getSumOfProfit(): array
     {
         $sql = "SELECT SUM(price) AS total_profit FROM appointments WHERE status = 'finished'";
-        return $this->query(sql: $sql);
+        $results = $this->query(sql: $sql);
+
+        return array_map(
+        /**
+         * @param array<string, mixed> $row
+         * @return array{total_profit: float|string|null}
+         */
+            fn(array $row) => [
+                'total_profit' => is_null($row['total_profit']) ? null : $row['total_profit'],
+            ],
+            $results
+        );
     }
 
     /**

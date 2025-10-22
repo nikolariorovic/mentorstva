@@ -12,7 +12,7 @@ interface UserSpecializationRepositoryInterface
     public function deleteUserSpecializations(int $userId): void;
     /**
      * @param int $id
-     * @return array<string, mixed>
+     * @return list<array<string, mixed>>
      */
     public function getUserSpecializations(int $id): array;
 }
