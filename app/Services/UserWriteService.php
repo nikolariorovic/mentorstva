@@ -11,14 +11,14 @@ use App\Models\Mentor;
 use App\Helpers\UserHelper;
 use App\Exceptions\UserNotFoundException;
 
-class UserWriteService implements UserWriteServiceInterface
+readonly class UserWriteService implements UserWriteServiceInterface
 {
     public function __construct(
-        private readonly UserWriteRepositoryInterface $userWriteRepository,
-        private readonly UserReadRepositoryInterface $userReadRepository,
-        private readonly UserSpecializationRepositoryInterface $userSpecializationRepository,
-        private readonly ValidatorInterface $userCreateValidator,
-        private readonly ValidatorInterface $userUpdateValidator
+        private UserWriteRepositoryInterface          $userWriteRepository,
+        private UserReadRepositoryInterface           $userReadRepository,
+        private UserSpecializationRepositoryInterface $userSpecializationRepository,
+        private ValidatorInterface                    $userCreateValidator,
+        private ValidatorInterface                    $userUpdateValidator
     ) {
 
     }

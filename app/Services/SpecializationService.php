@@ -7,9 +7,9 @@ use App\Factories\SpecializationFactory;
 use App\Services\Interfaces\SpecializationServiceInterface;
 use App\Models\Specialization;
 
-class SpecializationService implements SpecializationServiceInterface
+readonly class SpecializationService implements SpecializationServiceInterface
 {
-    public function __construct(private readonly SpecializationRepositoryInterface $specializationRepository)
+    public function __construct(private SpecializationRepositoryInterface $specializationRepository)
     {
 
     }

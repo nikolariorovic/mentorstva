@@ -8,14 +8,14 @@ use App\Validators\RatingValidator;
 use App\Services\Interfaces\AppointmentWriteServiceInterface;
 use App\Services\Interfaces\SessionServiceInterface;
 
-class AppointmentWriteService implements AppointmentWriteServiceInterface
+readonly class AppointmentWriteService implements AppointmentWriteServiceInterface
 {
     public function __construct(
-        private readonly AppointmentWriteRepositoryInterface $appointmentRepository,
-        private readonly BookingValidator $bookingValidator,
-        private readonly UpdateAppointmentStatusValidator $updateAppointmentStatusValidator,
-        private readonly RatingValidator $ratingValidator,
-        private readonly SessionServiceInterface $sessionService
+        private AppointmentWriteRepositoryInterface $appointmentRepository,
+        private BookingValidator                    $bookingValidator,
+        private UpdateAppointmentStatusValidator    $updateAppointmentStatusValidator,
+        private RatingValidator                     $ratingValidator,
+        private SessionServiceInterface             $sessionService
     ) {
 
     }

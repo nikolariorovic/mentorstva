@@ -8,12 +8,12 @@ use App\Services\Interfaces\AppointmentReadServiceInterface;
 use InvalidArgumentException;
 use App\Services\Interfaces\SessionServiceInterface;
 
-class AppointmentReadService implements AppointmentReadServiceInterface
+readonly class AppointmentReadService implements AppointmentReadServiceInterface
 {
     public function __construct(
-        private readonly AppointmentReadRepositoryInterface $appointmentRepository,
-        private readonly TimeSlotValidator $timeSlotValidator,
-        private readonly SessionServiceInterface $sessionService
+        private AppointmentReadRepositoryInterface $appointmentRepository,
+        private TimeSlotValidator                  $timeSlotValidator,
+        private SessionServiceInterface            $sessionService
     ) {
 
     }

@@ -7,9 +7,9 @@ use App\Services\Interfaces\AuthServiceInterface;
 use App\Exceptions\UserNotFoundException;
 use App\Factories\UserFactory;
 
-class AuthService implements AuthServiceInterface
+readonly class AuthService implements AuthServiceInterface
 {
-    public function __construct(private readonly UserReadRepositoryInterface $userReadRepository)
+    public function __construct(private UserReadRepositoryInterface $userReadRepository)
     {
 
     }

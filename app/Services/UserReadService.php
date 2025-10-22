@@ -11,11 +11,11 @@ use App\Models\Mentor;
 use App\Helpers\UserHelper;
 use App\Exceptions\UserNotFoundException;
 
-class UserReadService implements UserReadServiceInterface
+readonly class UserReadService implements UserReadServiceInterface
 {
     public function __construct(
-        private readonly UserReadRepositoryInterface $userReadRepository,
-        private readonly UserSpecializationRepositoryInterface $userSpecializationRepository
+        private UserReadRepositoryInterface           $userReadRepository,
+        private UserSpecializationRepositoryInterface $userSpecializationRepository
     ) {
 
     }
